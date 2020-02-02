@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using BankingApplication.Data;
 using BankingApplication.Models;
 using Microsoft.AspNetCore.Http;
@@ -28,9 +29,26 @@ namespace BankingApplication.Controllers
         {
             //LINQ query for eager loading login
             var login = await repo.Login.GetByID(a => a.UserID == userID).Include(a => a.Customer).FirstOrDefaultAsync();
+            if(login.Locked == true)
+            {
+                ModelState.AddModelError("LoginFailed", "This account is locked.");
+                return View(new LoginViewModel { UserID = userID });
+            }
+            var attempts = HttpContext.Session.GetInt32("LoginLock");
+            if (!attempts.HasValue)
+            {
+                HttpContext.Session.SetInt32("LoginLock", 1);
+                attempts = 1;
+            }
             if (login == null || !PBKDF2.Verify(login.Password, password))
             {
-                ModelState.AddModelError("LoginFailed", "Login failed, please try again.");
+                if(attempts == 3)
+                {
+                    login.Lock(DateTime.UtcNow.AddMinutes(1));
+                }
+                var LoginLock = 3 - attempts;
+                ModelState.AddModelError("LoginFailed", $"Login failed, please try again. {LoginLock} attempts left.");
+                HttpContext.Session.SetInt32("LoginLock", (int)attempts + 1);
                 return View(new LoginViewModel { UserID = userID });
             }
 

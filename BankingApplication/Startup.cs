@@ -38,7 +38,7 @@ namespace BankingApplication
             {
                 // Make the session cookie essential.
                 options.Cookie.IsEssential = true;
-                options.IdleTimeout = TimeSpan.FromMinutes(15);
+                options.IdleTimeout = TimeSpan.FromMinutes(1);
             });
             //Billpayservice for background checking bills
             services.AddHostedService<BillPayService>();
