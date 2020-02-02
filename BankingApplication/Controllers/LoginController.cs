@@ -45,6 +45,9 @@ namespace BankingApplication.Controllers
                 if(attempts == 3)
                 {
                     login.Lock(DateTime.UtcNow.AddMinutes(1));
+                    await repo.SaveChanges();
+                    ModelState.AddModelError("LoginFailed", "Allowed attempts exceeded. This account is now locked.");
+                    return View(new LoginViewModel { UserID = userID });
                 }
                 var LoginLock = 3 - attempts;
                 ModelState.AddModelError("LoginFailed", $"Login failed, please try again. {LoginLock} attempts left.");
