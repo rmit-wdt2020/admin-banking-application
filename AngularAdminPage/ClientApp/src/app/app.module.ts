@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
+import { AccountListComponent } from './account-list/account-list.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    CustomerListComponent
+    CustomerListComponent,
+    AccountListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -28,7 +30,8 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'customer-list', component: CustomerListComponent }
+      { path: 'customer-list', component: CustomerListComponent },
+      { path: 'account-list/:id', component: AccountListComponent }
     ])
   ],
   providers: [],

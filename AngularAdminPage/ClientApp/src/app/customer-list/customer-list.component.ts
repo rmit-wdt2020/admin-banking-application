@@ -8,10 +8,12 @@ import { Customer } from '../../../models/customers';
 })
 export class CustomerListComponent implements OnInit {
   public customers: Customer[] = [];
+  selectedEntry: any;
   constructor() { }
 
   ngOnInit() {
     const customerOne: Customer = {
+      id: 1,
       customerName: 'Vineet',
       TFN: '12345678',
       address: 'Lalor',
@@ -22,6 +24,7 @@ export class CustomerListComponent implements OnInit {
   };
 
   const customerTwo: Customer = {
+    id: 2,
     customerName: 'Maria',
     TFN: '12345678',
     address: '',
@@ -34,5 +37,8 @@ export class CustomerListComponent implements OnInit {
     this.customers.push(customerOne);
     this.customers.push(customerTwo);
   }
+  onSelectionChange(entry) {
+    this.selectedEntry = entry;
+}
 
 }

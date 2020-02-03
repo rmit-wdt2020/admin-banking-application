@@ -17,7 +17,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let customer of customers">
-      <td><input  type="radio" id="selectedCustomer" ng-value="customer" style="margin-right:10px"/>{{ customer.customerName }}</td>
+      <td><input  type="radio" name="selectCustomer" (change)="onSelectionChange(customer.id)" ng-value="customer" style="margin-right:10px"/>{{ customer.customerName }}</td>
       <td>{{ customer.address }}</td>
       <td>{{ customer.city }}</td>
       <td>{{ customer.state }}</td>
@@ -28,6 +28,6 @@
 </table>
 
 <div class="text-center" style="margin-top:30px">
-    <button class="btn btn-primary" style="margin-right:30px">View Accounts</button>
+    <button class="btn btn-primary" style="margin-right:30px" [routerLink]="['/account-list', selectedEntry]">View Accounts</button>
     <button class="btn btn-primary">Edit profile</button>
 </div>
