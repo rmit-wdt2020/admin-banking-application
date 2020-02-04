@@ -19,6 +19,11 @@ namespace BankingApplication.Models {
         [Required, StringLength (15)]
         public DateTime ModifyDate { get; set; }
 
+        [StringLength(15)]
+        public DateTime LockoutTime { get; set; }
+
+        public bool Locked { get; set; } = false;
+
         public (string, string) ChangePassword(string oldpassword , string newpassword, string confirmnewpassword )
         {
             if (!PBKDF2.Verify(Password, oldpassword))
@@ -39,5 +44,18 @@ namespace BankingApplication.Models {
             ModifyDate = DateTime.UtcNow;
             return ("PasswordChangeSuccess", "Password changed successfully.");
         }
+
+        public void Lock(DateTime lockoutTime)
+        {
+            Locked = true;
+            LockoutTime = lockoutTime;
+        }
+
+        public void UnLock()
+        {
+            Locked = false;
+        }
+
+
     }
 }

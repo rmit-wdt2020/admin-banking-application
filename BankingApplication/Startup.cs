@@ -38,7 +38,7 @@ namespace BankingApplication
             {
                 // Make the session cookie essential.
                 options.Cookie.IsEssential = true;
-                options.IdleTimeout = TimeSpan.FromMinutes(15);
+                options.IdleTimeout = TimeSpan.FromMinutes(1);
             });
             //Billpayservice for background checking bills
             services.AddHostedService<BillPayService>();
@@ -58,11 +58,13 @@ namespace BankingApplication
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            //Custom error pages middleware
+            app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -71,6 +73,7 @@ namespace BankingApplication
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            
         }
     }
 }

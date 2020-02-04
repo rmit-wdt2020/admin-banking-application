@@ -10,6 +10,8 @@
     <Compile Remove="Migrations\20200125063212_BillPayChanges.Designer.cs" />
     <Compile Remove="Migrations\20200125070104_PayeeChanges.cs" />
     <Compile Remove="Migrations\20200125070104_PayeeChanges.Designer.cs" />
+    <Compile Remove="Migrations\20200201114409_LoginLock.cs" />
+    <Compile Remove="Migrations\20200201114409_LoginLock.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -20,6 +20,7 @@ namespace BankingApplication.HostedServices {
         private readonly IServiceScopeFactory _scopedFactory;
         private Wrapper repo;
         private List<BillPay> bills = new List<BillPay>();
+        private List<Login> logins = new List<Login>();
         private Timer _timer;
         private Task task;
 
@@ -40,7 +41,8 @@ namespace BankingApplication.HostedServices {
         //https://stackoverflow.com/questions/51572637/access-dbcontext-service-from-background-task
         private void DoWork (object state) {
 
-           task = CheckBills();
+            task = CheckBills();
+            task = CheckLocks();
            
             var count = Interlocked.Increment (ref executionCount);
             _logger.LogInformation (
@@ -73,6 +75,24 @@ namespace BankingApplication.HostedServices {
                 await repo.SaveChanges();
 
 
+            }
+        }
+
+        private async Task CheckLocks()
+        {
+            using (var scope = _scopedFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<BankAppContext>();
+                repo = new Wrapper(dbContext);
+                logins = await repo.Login.GetByID(x => x.Locked == true).ToListAsync();
+                foreach(var login in logins)
+                {
+                    if(login.LockoutTime < DateTime.UtcNow)
+                    {
+                        login.Locked = false;
+                    }
+                }
+                await repo.SaveChanges();
             }
         }
 
