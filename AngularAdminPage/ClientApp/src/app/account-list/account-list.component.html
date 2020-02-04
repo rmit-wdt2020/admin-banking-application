@@ -26,6 +26,7 @@
 </table>
 
 <div class="text-center" style="margin-top:30px">
-    <button class="btn btn-primary" style="margin-right:30px">View Transactions</button>
+    <button class="btn btn-secondary" style="margin-right:30px" [routerLink]="['/customer-list']"> < Back to Customer List</button>
+    <button class="btn btn-primary" style="margin-right:30px" [routerLink]="['/transaction-list', selectedEntry]">View Transactions</button>
     <button class="btn btn-primary">View Bills</button>
 </div>

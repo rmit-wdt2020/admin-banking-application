@@ -1,3 +1,4 @@
+
 <h1 id="tableLabel">Customer list</h1>
 
 <p *ngIf="!customers"><em>Loading...</em></p>
@@ -12,7 +13,6 @@
       <th>Postcode</th>
       <th>Phone</th>
       <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -23,11 +23,12 @@
       <td>{{ customer.state }}</td>
       <td>{{ customer.postCode }}</td>
       <td>{{ customer.phone }}</td>
+      <td><i class="fas fa-clock"></i></td>
     </tr>
   </tbody>
 </table>
 
 <div class="text-center" style="margin-top:30px">
     <button class="btn btn-primary" style="margin-right:30px" [routerLink]="['/account-list', selectedEntry]">View Accounts</button>
-    <button class="btn btn-primary">Edit profile</button>
+    <button class="btn btn-primary" [routerLink]="['/edit-profile']">Edit profile</button>
 </div>
