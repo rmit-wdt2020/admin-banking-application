@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RepositoryWrapper;
 
 namespace BankingApplication
 {
@@ -34,6 +35,7 @@ namespace BankingApplication
             });
             services.AddDbContext<BankAppContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("BankAppContext")));
+            services.AddTransient<Wrapper>();
             services.AddSession(options =>
             {
                 // Make the session cookie essential.

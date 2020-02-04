@@ -12,15 +12,16 @@ using RepositoryWrapper;
 namespace BankingApplication.Controllers {
     [AuthorizeCustomer]
     public class MyStatementsController : Controller {
+
         //Repository object
-        private readonly Wrapper repo;
-        public MyStatementsController (BankAppContext context) {
-            repo = new Wrapper (context);
+        private readonly Wrapper _repo;
+        public MyStatementsController (Wrapper repo) {
+            _repo = repo;
         }
         private int CustomerID => HttpContext.Session.GetInt32 (nameof (Customer.CustomerID)).Value;
         public async Task<IActionResult> SelectAccount () {
             
-            var accounts = await repo.Account.GetByID (x => x.CustomerID == CustomerID).ToListAsync ();
+            var accounts = await _repo.Account.GetByID (x => x.CustomerID == CustomerID).ToListAsync ();
 
             return View (accounts);
         }
@@ -38,7 +39,7 @@ namespace BankingApplication.Controllers {
             var selectedAccountNumber = HttpContext.Session.GetInt32 ("selectedAccountNumber");
             
             // List of transactions to be paged.
-            var pagedList = await repo.Transaction.GetByID (x => x.AccountNumber == selectedAccountNumber).ToPagedListAsync (page, pageSize);
+            var pagedList = await _repo.Transaction.GetByID (x => x.AccountNumber == selectedAccountNumber).ToPagedListAsync (page, pageSize);
 
             return View (pagedList);
         }
@@ -46,7 +47,7 @@ namespace BankingApplication.Controllers {
         // Returning a partial view showing balance and button to view transctions once account
         // is selected on select account page.
         public async Task<IActionResult> SeeMyBalance (int id) {
-            var account = await repo.Account.GetByID (x => x.AccountNumber == id).FirstOrDefaultAsync ();
+            var account = await _repo.Account.GetByID (x => x.AccountNumber == id).FirstOrDefaultAsync ();
             return PartialView (account);
         }
 

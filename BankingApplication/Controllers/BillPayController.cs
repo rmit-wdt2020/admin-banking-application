@@ -13,12 +13,13 @@ namespace BankingApplication.Controllers
     public class BillPayController : Controller
     {
         //Repository object
-        private readonly Wrapper repo;
-        private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
+        private readonly Wrapper _repo;
 
-        public BillPayController(BankAppContext context) {
-            repo = new Wrapper(context);
+        public BillPayController(Wrapper repo) {
+            _repo = repo;
         }
+
+        private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
 
         //Method for preparing create bill page
         //This controller method handles both creation of a new bill
@@ -28,16 +29,16 @@ namespace BankingApplication.Controllers
         {
             HttpContext.Session.SetInt32("Mod", 0);
             ViewData["Mod"] = 0;
-            var customer = await repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).FirstOrDefaultAsync();
+            var customer = await _repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).FirstOrDefaultAsync();
             var billviewmodel = new BillViewModel { Customer = customer };
             if (billID != 0)
             {
-                var bill = await repo.BillPay.GetByID(x => x.BillPayID == billID).FirstOrDefaultAsync();
+                var bill = await _repo.BillPay.GetByID(x => x.BillPayID == billID).FirstOrDefaultAsync();
                 billviewmodel.Billpay = bill;
                 HttpContext.Session.SetInt32("Mod", billID);
                 ViewData["Mod"] = billID;
             }
-            var list = await repo.Payee.GetAll().ToListAsync();
+            var list = await _repo.Payee.GetAll().ToListAsync();
             billviewmodel.SetPayeeDictionary(list);
             return View(billviewmodel);
         }
@@ -49,8 +50,8 @@ namespace BankingApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBill(BillViewModel billv)
         {
-            var customer = await repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).FirstOrDefaultAsync();
-            var list = await repo.Payee.GetAll().ToListAsync();
+            var customer = await _repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).FirstOrDefaultAsync();
+            var list = await _repo.Payee.GetAll().ToListAsync();
             billv.Customer = customer;
             billv.SetPayeeDictionary(list);
             if (!ModelState.IsValid)
@@ -58,17 +59,17 @@ namespace BankingApplication.Controllers
                 return View(billv);
             }
             var mod = HttpContext.Session.GetInt32("Mod");
-            billv.Billpay.FKAccountNumber = await repo.Account
+            billv.Billpay.FKAccountNumber = await _repo.Account
                 .GetByID(x => x.AccountNumber == billv.SelectedAccount).FirstOrDefaultAsync();
-            billv.Billpay.FKPayeeID = await repo.Payee.GetByID(x => x.PayeeID == billv.SelectedPayee).FirstOrDefaultAsync();
+            billv.Billpay.FKPayeeID = await _repo.Payee.GetByID(x => x.PayeeID == billv.SelectedPayee).FirstOrDefaultAsync();
             if (mod != 0)
             {
-                var bill = await repo.BillPay.GetByID(x => x.BillPayID == mod).FirstOrDefaultAsync();
+                var bill = await _repo.BillPay.GetByID(x => x.BillPayID == mod).FirstOrDefaultAsync();
                 bill.UpdateBill(billv.Billpay);
-                repo.BillPay.Update(bill);
+                _repo.BillPay.Update(bill);
             }
-            else { repo.BillPay.Update(billv.Billpay);}
-            await repo.SaveChanges();
+            else { _repo.BillPay.Update(billv.Billpay);}
+            await _repo.SaveChanges();
             ModelState.AddModelError("BillCreatedSuccess", "Bill has been saved.");
             var billviewmodel = new BillViewModel { Customer = customer };
             billviewmodel.SetPayeeDictionary(list);
@@ -78,7 +79,7 @@ namespace BankingApplication.Controllers
         //Method for prompting user to select account to view bills from
         public async Task<IActionResult> SelectAccount()
         {
-            var accounts = await repo.Account.GetByID(x => x.CustomerID == CustomerID).ToListAsync();
+            var accounts = await _repo.Account.GetByID(x => x.CustomerID == CustomerID).ToListAsync();
 
             return View(accounts);
         }
@@ -87,8 +88,8 @@ namespace BankingApplication.Controllers
         //Utilizes BillScheduleViewModel object
         public async Task<IActionResult> BillSchedule(int accountNumber)
         {
-            var account = await repo.Account.GetByID(x => x.AccountNumber == accountNumber).Include(x => x.Bills).FirstOrDefaultAsync();
-            var list = await repo.Payee.GetAll().ToListAsync();
+            var account = await _repo.Account.GetByID(x => x.AccountNumber == accountNumber).Include(x => x.Bills).FirstOrDefaultAsync();
+            var list = await _repo.Payee.GetAll().ToListAsync();
             BillScheduleViewModel bills = new BillScheduleViewModel(account, list);
             return View(bills);
         }
@@ -97,7 +98,7 @@ namespace BankingApplication.Controllers
         public async Task<IActionResult> SeeMyBalance(int id)
         {
             
-            var account = await repo.Account.GetByID(x => x.AccountNumber == id).FirstOrDefaultAsync();
+            var account = await _repo.Account.GetByID(x => x.AccountNumber == id).FirstOrDefaultAsync();
             return PartialView(account);
             
         }
@@ -105,9 +106,9 @@ namespace BankingApplication.Controllers
         //Method for handling deletion of existing bills
         public async Task<IActionResult> DeleteBill(int id)
         {
-            var bill = await repo.BillPay.GetByID(x => x.BillPayID == id).FirstOrDefaultAsync();
-            repo.BillPay.Delete(bill);
-            await repo.SaveChanges();
+            var bill = await _repo.BillPay.GetByID(x => x.BillPayID == id).FirstOrDefaultAsync();
+            _repo.BillPay.Delete(bill);
+            await _repo.SaveChanges();
             return RedirectToAction("CreateBill", "BillPay");
         }
     }
