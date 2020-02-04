@@ -18,9 +18,9 @@
       <td>{{ bill.accountNumber }}</td>
       <td>{{ bill.payeeId }}</td>
       <td>{{ bill.amount }}</td>
-      <td>{{ bill.scheduleDate }}</td>
+      <td>{{ bill.scheduleDate.toDateString() }}</td>
       <td>{{ bill.period }}</td>
-      <td>{{ bill.modifyDate }}</td>
+      <td>{{ bill.modifyDate.toDateString() }}</td>
       <td style="width: 150px"><button class="btn btn-primary" (click)="bill.blocked = !bill.blocked;toggleBlock(bill.id)">
         <span>{{bill.blocked ? 'Unblock' : 'Block'}}</span>
       </button></td>
