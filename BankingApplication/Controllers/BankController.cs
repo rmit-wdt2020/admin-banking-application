@@ -28,8 +28,7 @@ namespace BankingApplication.Controllers
         // Method to go to atm page.
         public async Task<IActionResult> Index() 
         {
-            customer =  await _repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).
-                FirstOrDefaultAsync();
+            customer = await _repo.Customer.GetWithAccounts(CustomerID);
 
             IndexViewModel indexViewModel = new IndexViewModel();
             indexViewModel.Customer = customer;
@@ -39,8 +38,7 @@ namespace BankingApplication.Controllers
 
         private async Task<Account> ReturnAccountData(int accountNumber) 
         {
-            var account = await _repo.Account.GetByID(x => x.AccountNumber == accountNumber).Include(x => x.Transactions).
-                FirstOrDefaultAsync();
+            var account = await _repo.Account.GetWithTransactions(accountNumber);
 
             return account;
         }
@@ -58,12 +56,10 @@ namespace BankingApplication.Controllers
                     break;
                 case "T":
                     await Transfer(int.Parse(accountNumber),int.Parse(destinationAccountNumber),decimal.Parse(amount),comment);
-                    Console.WriteLine("Test");
                     break;
             }
-            
-            customer =  await _repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).
-                FirstOrDefaultAsync();
+
+            customer = await _repo.Customer.GetWithAccounts(CustomerID);
             return View("Index",new IndexViewModel { Customer = customer });
 
         }

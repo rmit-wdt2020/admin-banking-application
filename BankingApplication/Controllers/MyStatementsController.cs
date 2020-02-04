@@ -20,8 +20,8 @@ namespace BankingApplication.Controllers {
         }
         private int CustomerID => HttpContext.Session.GetInt32 (nameof (Customer.CustomerID)).Value;
         public async Task<IActionResult> SelectAccount () {
-            
-            var accounts = await _repo.Account.GetByID (x => x.CustomerID == CustomerID).ToListAsync ();
+
+            var accounts = await _repo.Account.GetAccountsByID(CustomerID);
 
             return View (accounts);
         }
@@ -37,9 +37,9 @@ namespace BankingApplication.Controllers {
             const int pageSize = 4;
             
             var selectedAccountNumber = HttpContext.Session.GetInt32 ("selectedAccountNumber");
-            
+
             // List of transactions to be paged.
-            var pagedList = await _repo.Transaction.GetByID (x => x.AccountNumber == selectedAccountNumber).ToPagedListAsync (page, pageSize);
+            var pagedList = await _repo.Transaction.GetPages((int)selectedAccountNumber, page, pageSize);
 
             return View (pagedList);
         }
@@ -47,7 +47,7 @@ namespace BankingApplication.Controllers {
         // Returning a partial view showing balance and button to view transctions once account
         // is selected on select account page.
         public async Task<IActionResult> SeeMyBalance (int id) {
-            var account = await _repo.Account.GetByID (x => x.AccountNumber == id).FirstOrDefaultAsync ();
+            var account = await _repo.Account.GetByID(id);
             return PartialView (account);
         }
 

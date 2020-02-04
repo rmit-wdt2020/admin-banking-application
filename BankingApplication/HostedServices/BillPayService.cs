@@ -58,10 +58,10 @@ namespace BankingApplication.HostedServices {
             {
                 var repo = scope.ServiceProvider.GetRequiredService<Wrapper>();
                 _repo = repo;
-                bills = await _repo.BillPay.GetByID(x => x.ScheduleDate < DateTime.UtcNow).ToListAsync();
+                bills = await _repo.BillPay.GetDueBills();
                 foreach (var bill in bills)
                 {
-                    var account = await _repo.Account.GetByID(x => x.AccountNumber == bill.AccountNumber).Include(x => x.Transactions).FirstOrDefaultAsync();
+                    var account = await _repo.Account.GetWithTransactions(bill.AccountNumber);
                     account.PayBill(bill);
                     if(bill.Period == BillPay.Periods.OnceOff)
                     {
@@ -84,7 +84,7 @@ namespace BankingApplication.HostedServices {
             {
                 var repo = scope.ServiceProvider.GetRequiredService<Wrapper>();
                 _repo = repo;
-                logins = await _repo.Login.GetByID(x => x.Locked == true).ToListAsync();
+                logins = await _repo.Login.GetLocked();
                 foreach(var login in logins)
                 {
                     if(login.LockoutTime < DateTime.UtcNow)

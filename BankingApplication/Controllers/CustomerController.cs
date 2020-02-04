@@ -23,9 +23,7 @@ namespace BankingApplication.Controllers
 
         private async Task<Customer> GetCustomerData() 
         {
-            var customer = await _repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).
-                FirstOrDefaultAsync();
-
+            var customer = await _repo.Customer.GetWithAccounts(CustomerID);
             return customer;
         }
 
@@ -62,7 +60,7 @@ namespace BankingApplication.Controllers
         // Editing customer's password.
         public async Task<IActionResult> SavePassword(string oldpassword,string newpassword,string confirmnewpassword){
             var userID = HttpContext.Session.GetString(nameof(Login.UserID));
-            var login = await _repo.Login.GetByID(a => a.UserID == userID).FirstOrDefaultAsync();
+            var login = await _repo.Login.GetByID(int.Parse(userID));
             var result = login.ChangePassword(oldpassword, newpassword, confirmnewpassword);
             ModelState.AddModelError(result.Item1, result.Item2);
             await _repo.SaveChanges();

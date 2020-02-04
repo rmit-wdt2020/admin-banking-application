@@ -4,12 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Repository;
+using BankingApplication.Data;
 
 namespace RepositoryWrapper
 {
-    public class LoginRepository : Repository<Login>, IRepository<Login>
+    public class PayeeRepository : Repository<Payee>, IRepository<Payee>
     {
-        public LoginRepository(DbContext context) : base(context)
+        public PayeeRepository(BankAppContext context) : base(context)
         {
 
         }

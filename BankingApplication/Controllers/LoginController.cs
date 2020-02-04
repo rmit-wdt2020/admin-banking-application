@@ -29,7 +29,7 @@ namespace BankingApplication.Controllers
         public async Task<IActionResult> Login(string userID, string password)
         {
             //LINQ query for eager loading login
-            var login = await _repo.Login.GetByID(a => a.UserID == userID).Include(a => a.Customer).FirstOrDefaultAsync();
+            var login = await _repo.Login.GetWithCustomer(userID);
             if(login.Locked == true)
             {
                 ModelState.AddModelError("LoginFailed", "This account is locked.");

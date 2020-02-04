@@ -8,7 +8,7 @@ namespace RepositoryWrapper
 {
     public class Wrapper
     {
-        private BankAppContext _context;
+        protected BankAppContext _context;
         private AccountRepository _account;
         private CustomerRepository _customer;
         private TransactionRepository _transaction;

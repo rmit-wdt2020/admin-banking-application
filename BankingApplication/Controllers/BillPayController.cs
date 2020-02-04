@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RepositoryWrapper;
 using BankingApplication.Attributes;
+using System;
 
 namespace BankingApplication.Controllers
 {
@@ -29,16 +30,16 @@ namespace BankingApplication.Controllers
         {
             HttpContext.Session.SetInt32("Mod", 0);
             ViewData["Mod"] = 0;
-            var customer = await _repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).FirstOrDefaultAsync();
+            var customer = await _repo.Customer.GetWithAccounts(CustomerID);
             var billviewmodel = new BillViewModel { Customer = customer };
             if (billID != 0)
             {
-                var bill = await _repo.BillPay.GetByID(x => x.BillPayID == billID).FirstOrDefaultAsync();
+                var bill = await _repo.BillPay.GetByID(billID);
                 billviewmodel.Billpay = bill;
                 HttpContext.Session.SetInt32("Mod", billID);
                 ViewData["Mod"] = billID;
             }
-            var list = await _repo.Payee.GetAll().ToListAsync();
+            var list = await _repo.Payee.GetAll();
             billviewmodel.SetPayeeDictionary(list);
             return View(billviewmodel);
         }
@@ -50,8 +51,8 @@ namespace BankingApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBill(BillViewModel billv)
         {
-            var customer = await _repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).FirstOrDefaultAsync();
-            var list = await _repo.Payee.GetAll().ToListAsync();
+            var customer = await _repo.Customer.GetWithAccounts(CustomerID);
+            var list = await _repo.Payee.GetAll();
             billv.Customer = customer;
             billv.SetPayeeDictionary(list);
             if (!ModelState.IsValid)
@@ -60,11 +61,11 @@ namespace BankingApplication.Controllers
             }
             var mod = HttpContext.Session.GetInt32("Mod");
             billv.Billpay.FKAccountNumber = await _repo.Account
-                .GetByID(x => x.AccountNumber == billv.SelectedAccount).FirstOrDefaultAsync();
-            billv.Billpay.FKPayeeID = await _repo.Payee.GetByID(x => x.PayeeID == billv.SelectedPayee).FirstOrDefaultAsync();
+                .GetByID(billv.SelectedAccount);
+            billv.Billpay.FKPayeeID = await _repo.Payee.GetByID(billv.SelectedPayee);
             if (mod != 0)
             {
-                var bill = await _repo.BillPay.GetByID(x => x.BillPayID == mod).FirstOrDefaultAsync();
+                var bill = await _repo.BillPay.GetByID((int)mod);
                 bill.UpdateBill(billv.Billpay);
                 _repo.BillPay.Update(bill);
             }
@@ -79,7 +80,7 @@ namespace BankingApplication.Controllers
         //Method for prompting user to select account to view bills from
         public async Task<IActionResult> SelectAccount()
         {
-            var accounts = await _repo.Account.GetByID(x => x.CustomerID == CustomerID).ToListAsync();
+            var accounts = await _repo.Account.GetAccountsByID(CustomerID);
 
             return View(accounts);
         }
@@ -88,8 +89,8 @@ namespace BankingApplication.Controllers
         //Utilizes BillScheduleViewModel object
         public async Task<IActionResult> BillSchedule(int accountNumber)
         {
-            var account = await _repo.Account.GetByID(x => x.AccountNumber == accountNumber).Include(x => x.Bills).FirstOrDefaultAsync();
-            var list = await _repo.Payee.GetAll().ToListAsync();
+            var account = await _repo.Account.GetWithBills(accountNumber);
+            var list = await _repo.Payee.GetAll();
             BillScheduleViewModel bills = new BillScheduleViewModel(account, list);
             return View(bills);
         }
@@ -98,7 +99,7 @@ namespace BankingApplication.Controllers
         public async Task<IActionResult> SeeMyBalance(int id)
         {
             
-            var account = await _repo.Account.GetByID(x => x.AccountNumber == id).FirstOrDefaultAsync();
+            var account = await _repo.Account.GetByID(id);
             return PartialView(account);
             
         }
@@ -106,7 +107,7 @@ namespace BankingApplication.Controllers
         //Method for handling deletion of existing bills
         public async Task<IActionResult> DeleteBill(int id)
         {
-            var bill = await _repo.BillPay.GetByID(x => x.BillPayID == id).FirstOrDefaultAsync();
+            var bill = await _repo.BillPay.GetByID(id);
             _repo.BillPay.Delete(bill);
             await _repo.SaveChanges();
             return RedirectToAction("CreateBill", "BillPay");
