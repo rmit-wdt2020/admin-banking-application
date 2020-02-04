@@ -41,4 +41,8 @@ export class CustomerListComponent implements OnInit {
     this.selectedEntry = entry;
 }
 
+  deleteCustomerData(){
+    console.log('Deleting customer with id: ' + this.selectedEntry);
+  }
+
 }

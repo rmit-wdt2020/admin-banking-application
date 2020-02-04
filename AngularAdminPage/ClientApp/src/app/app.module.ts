@@ -13,6 +13,9 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
 import { AccountListComponent } from './account-list/account-list.component';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
 import { LoginComponent } from './login/login.component';
+import { BillListComponent } from './bill-list/bill-list.component';
+import { ChartComponent } from './chart/chart.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { LoginComponent } from './login/login.component';
     CustomerListComponent,
     AccountListComponent,
     TransactionListComponent,
-    LoginComponent
+    LoginComponent,
+    BillListComponent,
+    ChartComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -37,7 +43,10 @@ import { LoginComponent } from './login/login.component';
       { path: 'customer-list', component: CustomerListComponent },
       { path: 'account-list/:id', component: AccountListComponent },
       { path: 'transaction-list/:id', component: TransactionListComponent },
-      { path: 'login', component: LoginComponent }
+      { path: 'login', component: LoginComponent },
+      { path: 'bill-list/:id', component: BillListComponent },
+      { path: 'chart', component: ChartComponent },
+      { path: 'edit-profile/:id', component: EditProfileComponent }
 
     ])
   ],

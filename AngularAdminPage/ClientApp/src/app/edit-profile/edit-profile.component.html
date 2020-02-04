@@ -1,0 +1,42 @@
+<h1 class="row justify-content-center">Edit Profile</h1>
+<div class="row justify-content-center">
+   <div class="col-md-4">
+      <form #myform = "ngForm" (ngSubmit) = "editProfile(myform)">
+         <div class="form-group">
+            <label  class="control-label">Name:</label>
+         <input id="Name" name="Name" class="form-control" value= {{customerToBeEdited.customerName}}/>
+         </div>
+         <div class="form-group">
+            <label for="TFN" class="control-label">TFN:</label>
+            <input id="TFN" name="TFN" class="form-control" value= {{customerToBeEdited.TFN}}/>
+         </div>
+         <div class="form-group">
+            <label for="Address" class="control-label">Address:</label>
+            <input id="Address" name="Address" class="form-control" value= {{customerToBeEdited.address}}/>
+         </div>
+         <div class="form-group">
+            <label for="City" class="control-label">City:</label>           
+            <input id="City" name="City" class="form-control" value= {{customerToBeEdited.city}}/>
+         </div>
+         <div class="form-group">
+            <label for="State" class="control-label">State:</label>
+            <input id="State" name="State" class="form-control" value= {{customerToBeEdited.state}}/>
+         </div>
+         <div class="form-group">
+            <label for="PostCode" class="control-label">PostCode:</label>
+            <input id="PostCode" name="PostCode" class="form-control" value= {{customerToBeEdited.postCode}}/>
+         </div>
+         <div class="form-group">
+            <label for="Phone" class="control-label">Phone:</label>
+            <input id="Phone" name="Phone" class="form-control" value= {{customerToBeEdited.phone}}/>
+         </div>
+         <div class="text-center">
+            
+         </div>
+         <div class="form-group-inline text-center" style="margin-top:30px">
+             <input type="submit" value="Save" class="btn btn-primary" style="margin-right:50px">
+             <button type="button" class="btn btn-secondary" [routerLink]="['/customer-list']">Cancel</button>
+         </div>
+      </form>
+   </div>
+</div>

@@ -14,14 +14,14 @@ export class AccountListComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.selectedCustomerId = params['id'];
-      });
-      console.log(this.selectedCustomerId);
       this.fetchAccountData();
   }
 
   fetchAccountData() {
+    this.route.params.subscribe(params => {
+      this.selectedCustomerId = params['id'];
+      });
+    console.log(this.selectedCustomerId);
     const accountOne: Accounts = {
       accountNumber: 4100,
       accountType: 'Savings',
