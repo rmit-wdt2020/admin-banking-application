@@ -1,0 +1,29 @@
+<h1 id="tableLabel">Bills list</h1>
+
+<p *ngIf="!bills"><em>No bills scheduled.</em></p>
+
+<table class='table' aria-labelledby="tableLabel" *ngIf="bills" ng-app>
+  <thead>
+    <tr>
+      <th>Acc Number</th>
+      <th>Payee Number</th>
+      <th>Amount</th>
+      <th>Scheduled Date</th>
+      <th>Period</th>
+      <th>Last Modified</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let bill of bills">
+      <td>{{ bill.accountNumber }}</td>
+      <td>{{ bill.payeeId }}</td>
+      <td>{{ bill.amount }}</td>
+      <td>{{ bill.scheduleDate.toDateString() }}</td>
+      <td>{{ bill.period }}</td>
+      <td>{{ bill.modifyDate.toDateString() }}</td>
+      <td style="width: 150px"><button class="btn btn-primary" (click)="bill.blocked = !bill.blocked;toggleBlock(bill.id)">
+        <span>{{bill.blocked ? 'Unblock' : 'Block'}}</span>
+      </button></td>
+    </tr>
+  </tbody>
+</table>

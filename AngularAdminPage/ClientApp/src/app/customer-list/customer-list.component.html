@@ -1,0 +1,35 @@
+
+<h1 id="tableLabel">Customer list</h1>
+
+<p *ngIf="!customers"><em>Loading...</em></p>
+
+<table class='table' aria-labelledby="tableLabel" *ngIf="customers">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>City</th>
+      <th>State</th>
+      <th>Postcode</th>
+      <th>Phone</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let customer of customers">
+      <td><input  type="radio" name="selectCustomer" (change)="onSelectionChange(customer.id)" ng-value="customer" style="margin-right:10px"/>{{ customer.customerName }}</td>
+      <td>{{ customer.address }}</td>
+      <td>{{ customer.city }}</td>
+      <td>{{ customer.state }}</td>
+      <td>{{ customer.postCode }}</td>
+      <td>{{ customer.phone }}</td>
+      <td><i class="fas fa-clock"></i></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="text-center" style="margin-top:30px">
+    <button class="btn btn-primary" style="margin-right:30px" (click)="deleteCustomerData()">Delete customer</button>
+    <button class="btn btn-primary" style="margin-right:30px" [routerLink]="['/account-list', selectedEntry]">View Accounts</button>
+    <button class="btn btn-primary" [routerLink]="['/edit-profile', selectedEntry]">Edit profile</button>
+</div>

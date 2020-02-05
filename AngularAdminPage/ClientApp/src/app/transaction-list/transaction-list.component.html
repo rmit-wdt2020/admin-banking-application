@@ -1,0 +1,30 @@
+<h1 id="tableLabel">Transaction list</h1>
+
+<p *ngIf="!transactions"><em>No transactions to display.</em></p>
+
+<table class='table' aria-labelledby="tableLabel" *ngIf="transactions" ng-app>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Acc Number</th>
+      <th>Destination Acc Number</th>
+      <th>Amount</th>
+      <th>Comment</th>
+      <th>Last Modified</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let transaction of transactions">
+      <td>{{ transaction.transactionType }}</td>
+      <td>{{ transaction.accountNumber }}</td>
+      <td>{{ transaction.destinationAccountNumber }}</td>
+      <td>{{ transaction.amount }}</td>
+      <td>{{ transaction.comment }}</td>
+      <td>{{ transaction.modifyDate.toDateString() }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="text-center" style="margin-top:30px">
+    <button class="btn btn-primary" [routerLink]="['/chart']">View Graphical Data</button>
+</div>
