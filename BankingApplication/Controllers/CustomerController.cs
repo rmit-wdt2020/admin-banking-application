@@ -14,18 +14,16 @@ namespace BankingApplication.Controllers
     public class CustomerController : Controller
     {
         //Repository object
-        private readonly Wrapper repo;
-        public CustomerController(BankAppContext context)
+        private readonly Wrapper _repo;
+        public CustomerController(Wrapper repo)
         {
-            repo = new Wrapper(context);
+            _repo = repo;
         }
         private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
 
         private async Task<Customer> GetCustomerData() 
         {
-            var customer = await repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).
-                FirstOrDefaultAsync();
-
+            var customer = await _repo.Customer.GetWithAccounts(CustomerID);
             return customer;
         }
 
@@ -48,8 +46,8 @@ namespace BankingApplication.Controllers
         public async Task<IActionResult> EditProfile(Customer customer){
             if (ModelState.IsValid)
             {
-                repo.Customer.Update(customer);
-                await repo.SaveChanges();
+                _repo.Customer.Update(customer);
+                await _repo.SaveChanges();
                 ModelState.AddModelError("EditSuccess", "Profile edited successfully.");
                 // Updating session variable storing customer name.
                 HttpContext.Session.SetString(nameof(Customer.CustomerName), customer.CustomerName);
@@ -62,10 +60,10 @@ namespace BankingApplication.Controllers
         // Editing customer's password.
         public async Task<IActionResult> SavePassword(string oldpassword,string newpassword,string confirmnewpassword){
             var userID = HttpContext.Session.GetString(nameof(Login.UserID));
-            var login = await repo.Login.GetByID(a => a.UserID == userID).FirstOrDefaultAsync();
+            var login = await _repo.Login.GetByID(int.Parse(userID));
             var result = login.ChangePassword(oldpassword, newpassword, confirmnewpassword);
             ModelState.AddModelError(result.Item1, result.Item2);
-            await repo.SaveChanges();
+            await _repo.SaveChanges();
             return View("ChangePassword"); 
         }
 

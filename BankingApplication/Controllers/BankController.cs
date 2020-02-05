@@ -15,10 +15,11 @@ namespace BankingApplication.Controllers
     public class BankController : Controller
     {
         //Repository object
-        private readonly Wrapper repo;
-        public BankController(BankAppContext context) 
+        private readonly Wrapper _repo;
+
+        public BankController(Wrapper repo) 
         {
-            repo = new Wrapper(context);
+            _repo = repo;
         }
         private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
         private Customer customer;
@@ -27,8 +28,7 @@ namespace BankingApplication.Controllers
         // Method to go to atm page.
         public async Task<IActionResult> Index() 
         {
-            customer =  await repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).
-                FirstOrDefaultAsync();
+            customer = await _repo.Customer.GetWithAccounts(CustomerID);
 
             IndexViewModel indexViewModel = new IndexViewModel();
             indexViewModel.Customer = customer;
@@ -38,8 +38,7 @@ namespace BankingApplication.Controllers
 
         private async Task<Account> ReturnAccountData(int accountNumber) 
         {
-            var account = await repo.Account.GetByID(x => x.AccountNumber == accountNumber).Include(x => x.Transactions).
-                FirstOrDefaultAsync();
+            var account = await _repo.Account.GetWithTransactions(accountNumber);
 
             return account;
         }
@@ -57,12 +56,10 @@ namespace BankingApplication.Controllers
                     break;
                 case "T":
                     await Transfer(int.Parse(accountNumber),int.Parse(destinationAccountNumber),decimal.Parse(amount),comment);
-                    Console.WriteLine("Test");
                     break;
             }
-            
-            customer =  await repo.Customer.GetByID(x => x.CustomerID == CustomerID).Include(x => x.Accounts).
-                FirstOrDefaultAsync();
+
+            customer = await _repo.Customer.GetWithAccounts(CustomerID);
             return View("Index",new IndexViewModel { Customer = customer });
 
         }
@@ -82,7 +79,7 @@ namespace BankingApplication.Controllers
             
             ModelState.AddModelError("TransactionSuccess", "Transaction Successful.");
 
-            await repo.SaveChanges();
+            await _repo.SaveChanges();
                     
         }
 
@@ -94,7 +91,7 @@ namespace BankingApplication.Controllers
             
             ModelState.AddModelError("TransactionSuccess", "Transaction Successful.");
 
-            await repo.SaveChanges();
+            await _repo.SaveChanges();
 
             return RedirectToAction ("Index", "Bank");               
 
@@ -130,7 +127,7 @@ namespace BankingApplication.Controllers
             
             ModelState.AddModelError("TransactionSuccess", "Transaction Successful.");
 
-            await repo.SaveChanges();
+            await _repo.SaveChanges();
             
         }
 

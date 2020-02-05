@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,6 +21,7 @@ namespace BankingApplication.Models {
 
         [Required]
         public int CustomerID { get; set; }
+        [JsonIgnore]
         public virtual Customer Customer { get; set; }
 
         [Column (TypeName = "money")]
@@ -30,8 +32,9 @@ namespace BankingApplication.Models {
         [Required]
         [StringLength (8)]
         public DateTime ModifyDate { get; set; }
+        [JsonIgnore]
         public List<Transaction> Transactions { get; set; }
-
+        [JsonIgnore]
         public List<BillPay> Bills { get; set; }
 
         public void GenerateTransaction (char type, decimal amount, int destinationAccountNumber = 0, string comment = null) {
@@ -54,7 +57,7 @@ namespace BankingApplication.Models {
 
         // Check if after withdrawing min balance of 0 remains in savings and 200 in checkings.
         // Withdrawal amount includes service charges for withdraw and transfer.
-        public bool checkIfFundsSufficient (decimal amount, decimal transactionCharge) {
+        public bool CheckIfFundsSufficient (decimal amount, decimal transactionCharge) {
             var filteredList = Transactions.Where (t => t.TransactionType != Transaction.ServiceChargeTransaction);
 
             if (filteredList.Count () >= 5) {
@@ -73,7 +76,7 @@ namespace BankingApplication.Models {
         }
 
         public bool Withdraw (decimal amount) {
-            bool haveSufficientFunds = checkIfFundsSufficient (amount, WithdrawServiceCharge);
+            bool haveSufficientFunds = CheckIfFundsSufficient (amount, WithdrawServiceCharge);
 
             // Abort if funds are less.
             if (!haveSufficientFunds) {
@@ -103,7 +106,7 @@ namespace BankingApplication.Models {
         }
 
         public bool Transfer (decimal amount, Account receiverAccount, string comment = null) {
-            bool haveSufficientFunds = checkIfFundsSufficient (amount, TransferServiceCharge);
+            bool haveSufficientFunds = CheckIfFundsSufficient (amount, TransferServiceCharge);
             
             // Abort if funds are less.
             if (!haveSufficientFunds) {
@@ -135,7 +138,7 @@ namespace BankingApplication.Models {
 
         public bool PayBill(BillPay bill)
         {
-            if(!checkIfFundsSufficient(bill.Amount, 0))
+            if(!CheckIfFundsSufficient(bill.Amount, 0))
             {
                 return false;
             }

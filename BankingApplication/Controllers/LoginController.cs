@@ -13,10 +13,11 @@ namespace BankingApplication.Controllers
     public class LoginController : Controller
     {
         //Repository object
-        private readonly Wrapper repo;
-        public LoginController(BankAppContext context)
+        private readonly Wrapper _repo;
+
+        public LoginController(Wrapper repo)
         {
-            repo = new Wrapper(context);
+            _repo = repo;
         }
         public IActionResult Login()
         {
@@ -28,7 +29,7 @@ namespace BankingApplication.Controllers
         public async Task<IActionResult> Login(string userID, string password)
         {
             //LINQ query for eager loading login
-            var login = await repo.Login.GetByID(a => a.UserID == userID).Include(a => a.Customer).FirstOrDefaultAsync();
+            var login = await _repo.Login.GetWithCustomer(userID);
             if(login.Locked == true)
             {
                 ModelState.AddModelError("LoginFailed", "This account is locked.");
@@ -45,7 +46,7 @@ namespace BankingApplication.Controllers
                 if(attempts == 3)
                 {
                     login.Lock(DateTime.UtcNow.AddMinutes(1));
-                    await repo.SaveChanges();
+                    await _repo.SaveChanges();
                     ModelState.AddModelError("LoginFailed", "Allowed attempts exceeded. This account is now locked.");
                     return View(new LoginViewModel { UserID = userID });
                 }

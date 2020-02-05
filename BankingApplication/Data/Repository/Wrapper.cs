@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BankingApplication.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 //Wrapper for utilizing generic repository
@@ -7,7 +8,7 @@ namespace RepositoryWrapper
 {
     public class Wrapper
     {
-        private DbContext _context;
+        protected BankAppContext _context;
         private AccountRepository _account;
         private CustomerRepository _customer;
         private TransactionRepository _transaction;
@@ -15,7 +16,7 @@ namespace RepositoryWrapper
         private LoginRepository _login;
         private PayeeRepository _payee;
 
-        public Wrapper(DbContext context)
+        public Wrapper(BankAppContext context)
         {
             _context = context;
         }

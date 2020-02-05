@@ -18,7 +18,7 @@ namespace BankingApplication.HostedServices {
         private int executionCount = 0;
         private readonly ILogger<BillPayService> _logger;
         private readonly IServiceScopeFactory _scopedFactory;
-        private Wrapper repo;
+        private Wrapper _repo;
         private List<BillPay> bills = new List<BillPay>();
         private List<Login> logins = new List<Login>();
         private Timer _timer;
@@ -56,23 +56,23 @@ namespace BankingApplication.HostedServices {
         {
             using (var scope = _scopedFactory.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<BankAppContext>();
-                repo = new Wrapper(dbContext);
-                bills = await repo.BillPay.GetByID(x => x.ScheduleDate < DateTime.UtcNow).ToListAsync();
+                var repo = scope.ServiceProvider.GetRequiredService<Wrapper>();
+                _repo = repo;
+                bills = await _repo.BillPay.GetDueBills();
                 foreach (var bill in bills)
                 {
-                    var account = await repo.Account.GetByID(x => x.AccountNumber == bill.AccountNumber).Include(x => x.Transactions).FirstOrDefaultAsync();
+                    var account = await _repo.Account.GetWithTransactions(bill.AccountNumber);
                     account.PayBill(bill);
                     if(bill.Period == BillPay.Periods.OnceOff)
                     {
-                        repo.BillPay.Delete(bill);
+                        _repo.BillPay.Delete(bill);
                     }
                     else
                     {
-                        repo.BillPay.Update(bill);
+                        _repo.BillPay.Update(bill);
                     }
                 }
-                await repo.SaveChanges();
+                await _repo.SaveChanges();
 
 
             }
@@ -82,9 +82,9 @@ namespace BankingApplication.HostedServices {
         {
             using (var scope = _scopedFactory.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<BankAppContext>();
-                repo = new Wrapper(dbContext);
-                logins = await repo.Login.GetByID(x => x.Locked == true).ToListAsync();
+                var repo = scope.ServiceProvider.GetRequiredService<Wrapper>();
+                _repo = repo;
+                logins = await _repo.Login.GetLocked();
                 foreach(var login in logins)
                 {
                     if(login.LockoutTime < DateTime.UtcNow)
@@ -92,7 +92,7 @@ namespace BankingApplication.HostedServices {
                         login.Locked = false;
                     }
                 }
-                await repo.SaveChanges();
+                await _repo.SaveChanges();
             }
         }
 
