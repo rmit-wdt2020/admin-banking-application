@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,6 +21,7 @@ namespace BankingApplication.Models {
 
         [Required]
         public int CustomerID { get; set; }
+        [JsonIgnore]
         public virtual Customer Customer { get; set; }
 
         [Column (TypeName = "money")]
@@ -30,8 +32,9 @@ namespace BankingApplication.Models {
         [Required]
         [StringLength (8)]
         public DateTime ModifyDate { get; set; }
+        [JsonIgnore]
         public List<Transaction> Transactions { get; set; }
-
+        [JsonIgnore]
         public List<BillPay> Bills { get; set; }
 
         public void GenerateTransaction (char type, decimal amount, int destinationAccountNumber = 0, string comment = null) {

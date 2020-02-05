@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RepositoryWrapper;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 namespace BankingApplication
 {
@@ -44,7 +45,7 @@ namespace BankingApplication
             });
             //Billpayservice for background checking bills
             services.AddHostedService<BillPayService>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
