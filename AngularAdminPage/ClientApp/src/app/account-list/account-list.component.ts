@@ -26,24 +26,18 @@ export class AccountListComponent implements OnInit {
       accountNumber: 4100,
       accountType: 'Savings',
       balance: 352.20,
-      modifyDate: new Date('2019-01-16'),
-      locked: false
+      modifyDate: new Date('2019-01-16')
   };
 
   const accountTwo: Accounts = {
       accountNumber: 4200,
       accountType: 'Checkings',
       balance: 352.20,
-      modifyDate: new Date('2019-01-19'),
-      locked: false
+      modifyDate: new Date('2019-01-19')
 };
 
     this.accounts.push(accountOne);
     this.accounts.push(accountTwo);
-  }
-
-  toggleLock(accountNumber: number) {
-    console.log('Toggling lock of account with number ' + accountNumber);
   }
 
   onSelectionChange(entry) {

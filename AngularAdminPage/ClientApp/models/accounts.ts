@@ -3,6 +3,5 @@ export interface Accounts {
     accountType: string;
     balance: number;
     modifyDate: Date;
-    locked: boolean;
 }
 

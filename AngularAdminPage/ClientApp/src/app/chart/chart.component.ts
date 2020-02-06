@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { Transaction } from '../../../models/transactions';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-chart',
@@ -9,9 +10,23 @@ import { Transaction } from '../../../models/transactions';
 })
 export class ChartComponent implements OnInit {
   public transactions: Transaction[] = [];
-  constructor() { }
+  selectedAccountId: number;
+  selectedCustomerId: number;
+  startDate: any;
+  endDate: any;
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.selectedCustomerId = params['customerid'];
+      this.selectedAccountId = params['accountid'];
+      this.startDate = params['startdate'];
+      this.endDate = params['enddate'];
+     });
+     console.log(this.selectedCustomerId);
+     console.log(this.selectedAccountId);
+     console.log(this.startDate);
+     console.log(this.endDate);
     const transOne: Transaction = {
       transactionID: 1,
       transactionType: 'W',
