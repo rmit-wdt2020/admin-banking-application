@@ -80,7 +80,7 @@ namespace BankingApplication.Controllers
         //Method for prompting user to select account to view bills from
         public async Task<IActionResult> SelectAccount()
         {
-            var accounts = await _repo.Account.GetAccountsByID(CustomerID);
+            var accounts = await _repo.Account.GetAccountsByCustomerID(CustomerID);
 
             return View(accounts);
         }

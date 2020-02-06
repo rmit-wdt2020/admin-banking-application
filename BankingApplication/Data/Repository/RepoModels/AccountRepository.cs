@@ -26,7 +26,7 @@ namespace RepositoryWrapper
             return _context.Account.Where(x => x.AccountNumber == id).Include(x => x.Bills).FirstOrDefaultAsync();
         }
 
-        public Task<List<Account>> GetAccountsByID(int id)
+        public Task<List<Account>> GetAccountsByCustomerID(int id)
         {
             return _context.Account.Where(x => x.CustomerID == id).ToListAsync();
         }

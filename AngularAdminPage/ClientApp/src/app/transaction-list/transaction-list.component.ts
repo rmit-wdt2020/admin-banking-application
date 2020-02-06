@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import { Transaction } from '../../../models/transactions';
 import {FormControl} from '@angular/forms';
+import { ApiService } from '../../../src/app/services/api.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -17,7 +18,7 @@ export class TransactionListComponent implements OnInit {
   myFilter = (d: Date): boolean => {
     return d > this.startDate.value;
   }
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private api: ApiService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -30,27 +31,8 @@ export class TransactionListComponent implements OnInit {
   }
 
   fetchTransactionData() {
-    const transOne: Transaction = {
-      transactionID: 1,
-      transactionType: 'W',
-      accountNumber: 4100,
-      amount: 100,
-      comment: 'First trans',
-      modifyDate: new Date('2019-01-16')
-  };
-
-  const transTwo: Transaction = {
-    transactionID: 1,
-    transactionType: 'D',
-    accountNumber: 4100,
-    amount: 100,
-    comment: 'Sec trans',
-    modifyDate: new Date('2019-01-16')
-};
-
-    this.transactions.push(transOne);
-    this.transactions.push(transTwo);
-
+    this.api.get('/transactions/' + this.selectedAccountId)
+      .subscribe(data => { this.transactions = data; }, error => { console.log(error); });
     console.log(this.startDate);
   }
   filterTransactions() {

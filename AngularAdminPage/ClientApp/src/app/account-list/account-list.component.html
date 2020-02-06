@@ -15,9 +15,9 @@
   <tbody>
     <tr *ngFor="let account of accounts">
       <td><input  type="radio" id="selectedAccount" name="selectedAccount" (change)="onSelectionChange(account.accountNumber)" ng-value="account" style="margin-right:10px"/>{{ account.accountNumber }}</td>
-      <td>{{ account.accountType }}</td>
+      <td>{{ account.accountType === 'S' ? 'Savings':'Checkings'}}</td>
       <td>{{ account.balance }}</td>
-      <td>{{ account.modifyDate.toDateString() }}</td>
+      <td>{{ account.modifyDate }}</td>
     </tr>
   </tbody>
 </table>
