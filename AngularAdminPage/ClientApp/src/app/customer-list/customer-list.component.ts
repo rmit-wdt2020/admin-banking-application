@@ -21,10 +21,6 @@ export class CustomerListComponent implements OnInit {
   ngOnInit() {
     this.api.get("/customers")
       .subscribe(data => { this.customers = data }, error => { console.log(error) });
-    //$.get(this.url, function (customerList) {
-    //  for (let x in customerList) {
-    //  this.customers.push(x)}
-    //})
   }
   onSelectionChange(entry) {
     this.selectedEntry = entry;
