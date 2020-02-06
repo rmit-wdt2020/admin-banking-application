@@ -52,11 +52,11 @@ namespace BankingApplication.Controllers
             return BadRequest();
         }
 
-        [HttpGet("accounts/{id}")]
-        public Task<Customer> GetWithAccounts(int id)
-        {
-            return _repo.Customer.GetWithAccounts(id);
-        }
+        // [HttpGet("accounts/{id}")]
+        // public Task<Customer> GetWithAccounts(int id)
+        // {
+        //     return _repo.Customer.GetWithAccounts(id);
+        // }
 
         [HttpGet("accounts/{id}")]
         public Task<List<Account>> GetAccountsByCustomerID(int id)

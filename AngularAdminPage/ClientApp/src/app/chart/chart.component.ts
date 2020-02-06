@@ -33,7 +33,7 @@ export class ChartComponent implements OnInit {
       accountNumber: 4100,
       amount: 100,
       comment: 'First trans',
-      modifyDate: new Date('2019-01-16')
+      modifyDate: 'Jan'
     };
 
     const transTwo: Transaction = {
@@ -42,7 +42,7 @@ export class ChartComponent implements OnInit {
       accountNumber: 4200,
       amount: 100,
       comment: 'Sec trans',
-      modifyDate: new Date('2019-02-16')
+      modifyDate: 'Feb'
     };
 
     const transTwoo: Transaction = {
@@ -51,7 +51,7 @@ export class ChartComponent implements OnInit {
       accountNumber: 4200,
       amount: 100,
       comment: 'Sec trans',
-      modifyDate: new Date('2019-03-16')
+      modifyDate: 'Mar'
     };
 
     this.transactions.push(transOne);
