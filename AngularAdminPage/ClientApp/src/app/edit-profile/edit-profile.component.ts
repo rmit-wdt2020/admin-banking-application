@@ -40,7 +40,8 @@ export class EditProfileComponent implements OnInit {
       city: 'Melbourne',
       state: 'VIC',
       postCode: '3075',
-      phone: '12345678'
+      phone: '12345678',
+      locked: false
   };
   }
   editProfile() {
