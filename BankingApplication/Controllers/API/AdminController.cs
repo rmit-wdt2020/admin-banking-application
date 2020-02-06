@@ -32,6 +32,26 @@ namespace BankingApplication.Controllers
             return _repo.Customer.GetByID(id);
         }
 
+        [HttpPost("togglelock")]
+        public async Task<IActionResult> Post([FromBody] string id)
+        {
+            var login = await _repo.Login.GetWithCustomer(id);
+            if (login != null)
+            {
+                if (!login.Locked)
+                {
+                    login.Lock(DateTime.UtcNow.AddMinutes(1));
+                }
+                else
+                {
+                    login.UnLock();
+                }
+                await _repo.SaveChanges();
+                return Ok();
+            }
+            return BadRequest();
+        }
+
         [HttpGet("accounts/{id}")]
         public Task<Customer> GetWithAccounts(int id)
         {

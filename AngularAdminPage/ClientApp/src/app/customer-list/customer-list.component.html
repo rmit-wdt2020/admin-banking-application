@@ -23,8 +23,7 @@
       <td>{{ customer.state }}</td>
       <td>{{ customer.postCode }}</td>
       <td>{{ customer.phone }}</td>
-      <td>Locked Status: {{customer.login.locked}}</td>
-      <td style="width: 100px"><button class="btn btn-primary" (click)="customer.locked = !customer.locked;toggleLock(customer.id)">
+      <td style="width: 100px"><button class="btn btn-primary" (click)="customer.login.locked = !customer.login.locked;toggleLock(customer.login.userID)">
           <span>{{customer.login.locked ? 'Unlock' : 'Lock'}}</span>
         </button></td>
     </tr>

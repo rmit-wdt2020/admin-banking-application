@@ -13,11 +13,8 @@ import { map } from 'rxjs/operators';
 })
 export class CustomerListComponent implements OnInit {
   public customers: Customer[] = [];
-  public error;
   selectedEntry: any;
-  http: HttpClient;
   constructor(private api: ApiService) { }
-  url = 'http://localhost:59858/api/admin';
 
   ngOnInit() {
     this.api.get("/customers")
@@ -30,8 +27,9 @@ export class CustomerListComponent implements OnInit {
   deleteCustomerData() {
     console.log('Deleting customer with id: ' + this.selectedEntry);
   }
-  toggleLock(id: number) {
+  toggleLock(id: string) {
     console.log('Toggling lock of customer with id ' + id);
+    this.api.post("/togglelock", id).subscribe(error => {console.log(error) });
   }
 
 }

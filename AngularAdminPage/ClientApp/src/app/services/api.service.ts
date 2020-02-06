@@ -46,4 +46,11 @@ export class ApiService {
       catchError(this.handleError)
     );
   }
+
+  public post(url: string, body:any) {
+    return this.http.post(url, body, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 }
