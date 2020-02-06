@@ -29,7 +29,7 @@
 </table>
 
 <div class="text-center" style="margin-top:30px">
-    <button class="btn btn-primary" style="margin-right:30px" (click)="deleteCustomerData()">Delete customer</button>
-    <button class="btn btn-primary" style="margin-right:30px" [routerLink]="['/account-list', selectedEntry]">View Accounts</button>
-    <button class="btn btn-primary" [routerLink]="['/edit-profile', selectedEntry]">Edit profile</button>
+    <button class="btn btn-primary" style="margin-right:30px" [disabled]="!selectedEntry" (click)="deleteCustomerData()">Delete customer</button>
+    <button class="btn btn-primary" style="margin-right:30px" [disabled]="!selectedEntry" [routerLink]="['/account-list', selectedEntry]">View Accounts</button>
+    <button class="btn btn-primary" [disabled]="!selectedEntry" [routerLink]="['/edit-profile', selectedEntry]">Edit profile</button>
 </div>
