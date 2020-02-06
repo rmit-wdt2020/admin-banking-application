@@ -21,5 +21,10 @@ namespace RepositoryWrapper
         {
             return _context.Customer.Where(x => x.CustomerID == id).Include(x => x.Accounts).FirstOrDefaultAsync();
         }
+
+        public Task<List<Customer>> GetWithLock()
+        {
+            return _context.Customer.Include(x => x.Login).ToListAsync();
+        }
     }
 }

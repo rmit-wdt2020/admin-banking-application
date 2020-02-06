@@ -4,6 +4,7 @@ import * as $ from "jquery";
 import { ApiService } from '../services/api.service';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer-list',
@@ -12,14 +13,10 @@ import { Observable } from 'rxjs';
 })
 export class CustomerListComponent implements OnInit {
   public customers: Customer[] = [];
-  public error;
   selectedEntry: any;
-  http: HttpClient;
   constructor(private api: ApiService) { }
-  url = 'http://localhost:59858/api/admin';
 
   ngOnInit() {
-
     this.api.get("/customers")
       .subscribe(data => { this.customers = data }, error => { console.log(error) });
   }
@@ -30,8 +27,9 @@ export class CustomerListComponent implements OnInit {
   deleteCustomerData() {
     console.log('Deleting customer with id: ' + this.selectedEntry);
   }
-  toggleLock(id: number) {
+  toggleLock(id: string) {
     console.log('Toggling lock of customer with id ' + id);
+    this.api.post("/togglelock", id).subscribe(error => {console.log(error) });
   }
 
 }

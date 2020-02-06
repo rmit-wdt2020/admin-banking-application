@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using SimpleHashing;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +12,7 @@ namespace BankingApplication.Models {
 
         [Required]
         public int CustomerID { get; set; }
+        [JsonIgnore]
         public Customer Customer { get; set; }
 
         [Required, StringLength (64)]

@@ -25,10 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\models\login.ts" />
     <None Remove="ClientApp\src\app\services\APIinterceptor.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\models\login.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\ApiInterceptor.service.ts" />
   </ItemGroup>
 
