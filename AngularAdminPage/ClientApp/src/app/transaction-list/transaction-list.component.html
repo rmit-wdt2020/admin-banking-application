@@ -43,5 +43,6 @@
 </table>
 
 <div class="text-center" style="margin-top:30px">
-    <button class="btn btn-primary" [routerLink]="['/chart']">View Graphical Data</button>
+    <button class="btn btn-secondary" style="margin-right:30px" [routerLink]="['/account-list', selectedCustomerId]">< Back to customer accounts</button>
+    <button class="btn btn-primary" [routerLink]="['/chart', selectedCustomerId, selectedAccountId, startDate.value ? startDate.value.toDateString() : '', endDate.value ? endDate.value.toDateString() : '']">View Graphical Data</button>
 </div>

@@ -11,6 +11,7 @@ import {FormControl} from '@angular/forms';
 export class TransactionListComponent implements OnInit {
   public transactions: Transaction[] = [];
   selectedAccountId: number;
+  selectedCustomerId: number;
   startDate = new FormControl();
   endDate = new FormControl();
   myFilter = (d: Date): boolean => {
@@ -20,9 +21,11 @@ export class TransactionListComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.selectedAccountId = params['id'];
-      });
+      this.selectedCustomerId = params['customerid'];
+      this.selectedAccountId = params['accountid'];
+     });
       console.log(this.selectedAccountId);
+      console.log(this.selectedCustomerId);
       this.fetchTransactionData();
   }
 

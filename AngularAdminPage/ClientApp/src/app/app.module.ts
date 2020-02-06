@@ -49,10 +49,10 @@ import {MatInputModule} from '@angular/material';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'customer-list', component: CustomerListComponent },
       { path: 'account-list/:id', component: AccountListComponent },
-      { path: 'transaction-list/:id', component: TransactionListComponent },
+      { path: 'transaction-list/:customerid/:accountid', component: TransactionListComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'bill-list/:id', component: BillListComponent },
-      { path: 'chart', component: ChartComponent },
+      { path: 'bill-list/:customerid/:accountid', component: BillListComponent },
+      { path: 'chart/:customerid/:accountid/:startdate/:enddate', component: ChartComponent },
       { path: 'edit-profile/:id', component: EditProfileComponent }
     ]),
     BrowserAnimationsModule,
