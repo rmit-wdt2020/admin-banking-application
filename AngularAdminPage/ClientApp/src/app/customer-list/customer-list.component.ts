@@ -4,6 +4,7 @@ import * as $ from "jquery";
 import { ApiService } from '../services/api.service';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer-list',
@@ -19,7 +20,6 @@ export class CustomerListComponent implements OnInit {
   url = 'http://localhost:59858/api/admin';
 
   ngOnInit() {
-
     this.api.get("/customers")
       .subscribe(data => { this.customers = data }, error => { console.log(error) });
   }

@@ -41,5 +41,7 @@ namespace BankingApplication.Models
         public string Phone { get; set; }
 
         public List<Account> Accounts { get; set; }
+
+        public Login Login { get; set; }
     }
 }

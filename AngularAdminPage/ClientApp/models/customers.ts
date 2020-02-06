@@ -1,5 +1,7 @@
+import { Login } from "./login";
+
 export interface Customer {
-    id: number;
+    customerID: number;
     customerName: string;
     TFN?: string;
     address?: string;
@@ -7,5 +9,5 @@ export interface Customer {
     state?: string;
     postCode?: string;
     phone: string;
-    locked: boolean;
+    login: Login;
 }

@@ -23,7 +23,7 @@ namespace BankingApplication.Controllers
         [HttpGet("customers")]
         public Task<List<Customer>> Get()
         {
-            return _repo.Customer.GetAll();
+            return _repo.Customer.GetWithLock();
         }
 
         [HttpGet("customers/{id}")]

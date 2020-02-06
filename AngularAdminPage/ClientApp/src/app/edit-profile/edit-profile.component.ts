@@ -33,7 +33,7 @@ export class EditProfileComponent implements OnInit {
       });
     console.log(this.selectedCustomerId);
     this.customerToBeEdited = {
-      id: 1,
+      customerID: 1,
       customerName: 'Vineet',
       TFN: '12345678',
       address: 'Lalor',
@@ -41,7 +41,7 @@ export class EditProfileComponent implements OnInit {
       state: 'VIC',
       postCode: '3075',
       phone: '12345678',
-      locked: false
+      login: null
   };
   }
   editProfile() {
