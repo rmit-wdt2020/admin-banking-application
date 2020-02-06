@@ -19,6 +19,7 @@ export class CustomerListComponent implements OnInit {
   url = 'http://localhost:59858/api/admin';
 
   ngOnInit() {
+
     this.api.get("/customers")
       .subscribe(data => { this.customers = data }, error => { console.log(error) });
   }
@@ -26,8 +27,11 @@ export class CustomerListComponent implements OnInit {
     this.selectedEntry = entry;
   }
 
-  deleteCustomerData(){
+  deleteCustomerData() {
     console.log('Deleting customer with id: ' + this.selectedEntry);
+  }
+  toggleLock(id: number) {
+    console.log('Toggling lock of customer with id ' + id);
   }
 
 }

@@ -50,6 +50,6 @@ export class EditProfileComponent implements OnInit {
       }
       this.customerToBeEdited = this.editProfileForm.value;
       console.log(this.customerToBeEdited);
-      // this.router.navigate(['\customer-list']);
+      this.router.navigate(['\customer-list']);
   }
 }

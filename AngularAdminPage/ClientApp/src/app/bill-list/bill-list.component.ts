@@ -10,14 +10,17 @@ import { ActivatedRoute } from '@angular/router';
 export class BillListComponent implements OnInit {
   public bills: Billpay[] = [];
   selectedAccountId: number;
+  selectedCustomerId: number;
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.selectedAccountId = params['id'];
-      });
-    console.log(this.selectedAccountId);
-    this.fetchBillData();
+      this.selectedCustomerId = params['customerid'];
+      this.selectedAccountId = params['accountid'];
+     });
+      console.log(this.selectedAccountId);
+      console.log(this.selectedCustomerId);
+      this.fetchBillData();
   }
   fetchBillData() {
     const billOne: Billpay = {

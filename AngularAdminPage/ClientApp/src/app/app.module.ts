@@ -18,6 +18,11 @@ import { BillListComponent } from './bill-list/bill-list.component';
 import { ChartComponent } from './chart/chart.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ApiInterceptor } from './services/APIinterceptor.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDatepickerModule} from '@angular/material';
+import {MatNativeDateModule} from '@angular/material';
+import {MatFormFieldModule} from '@angular/material';
+import {MatInputModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -45,13 +50,17 @@ import { ApiInterceptor } from './services/APIinterceptor.service';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'customer-list', component: CustomerListComponent },
       { path: 'account-list/:id', component: AccountListComponent },
-      { path: 'transaction-list/:id', component: TransactionListComponent },
+      { path: 'transaction-list/:customerid/:accountid', component: TransactionListComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'bill-list/:id', component: BillListComponent },
-      { path: 'chart', component: ChartComponent },
+      { path: 'bill-list/:customerid/:accountid', component: BillListComponent },
+      { path: 'chart/:customerid/:accountid/:startdate/:enddate', component: ChartComponent },
       { path: 'edit-profile/:id', component: EditProfileComponent }
-
-    ])
+    ]),
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true }],
   bootstrap: [AppComponent]
