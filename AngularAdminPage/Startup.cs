@@ -20,6 +20,7 @@ namespace AngularAdminPage
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -48,7 +49,7 @@ namespace AngularAdminPage
             {
                 app.UseSpaStaticFiles();
             }
-
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

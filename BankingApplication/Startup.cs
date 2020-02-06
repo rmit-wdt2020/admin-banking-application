@@ -37,6 +37,7 @@ namespace BankingApplication
             services.AddDbContext<BankAppContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("BankAppContext")));
             services.AddTransient<Wrapper>();
+            services.AddCors();
             services.AddSession(options =>
             {
                 // Make the session cookie essential.
@@ -69,6 +70,7 @@ namespace BankingApplication
             app.UseSession();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseEndpoints(endpoints =>
             {
