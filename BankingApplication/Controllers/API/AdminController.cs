@@ -20,13 +20,13 @@ namespace BankingApplication.Controllers
             _repo = repo;
         }
 
-        [HttpGet]
+        [HttpGet("customers")]
         public Task<List<Customer>> Get()
         {
             return _repo.Customer.GetAll();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("customers/{id}")]
         public ValueTask<Customer> Get(int id)
         {
             return _repo.Customer.GetByID(id);

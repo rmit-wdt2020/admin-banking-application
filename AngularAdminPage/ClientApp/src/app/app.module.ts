@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { APP_BASE_HREF } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -16,8 +17,8 @@ import { LoginComponent } from './login/login.component';
 import { BillListComponent } from './bill-list/bill-list.component';
 import { ChartComponent } from './chart/chart.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { ApiInterceptor } from './services/APIinterceptor.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import {MatDatepickerModule} from '@angular/material';
 import {MatNativeDateModule} from '@angular/material';
 import {MatFormFieldModule} from '@angular/material';
@@ -61,7 +62,7 @@ import {MatInputModule} from '@angular/material';
     MatFormFieldModule,
     MatInputModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Customer } from '../../../models/customers';
+import * as $ from "jquery";
+import { ApiService } from '../services/api.service';
+import { HttpClient } from "@angular/common/http";
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-customer-list',
@@ -8,40 +12,20 @@ import { Customer } from '../../../models/customers';
 })
 export class CustomerListComponent implements OnInit {
   public customers: Customer[] = [];
+  public error;
   selectedEntry: any;
-  constructor() { }
+  http: HttpClient;
+  constructor(private api: ApiService) { }
+  url = 'http://localhost:59858/api/admin';
 
   ngOnInit() {
-    const customerOne: Customer = {
-      id: 1,
-      customerName: 'Vineet',
-      TFN: '12345678',
-      address: 'Lalor',
-      city: 'Melbourne',
-      state: 'VIC',
-      postCode: '3075',
-      phone: '12345678',
-      locked: false
-  };
 
-  const customerTwo: Customer = {
-    id: 2,
-    customerName: 'Maria',
-    TFN: '12345678',
-    address: '',
-    city: 'Melbourne',
-    state: 'VIC',
-    postCode: '3075',
-    phone: '',
-    locked: false
-};
-
-    this.customers.push(customerOne);
-    this.customers.push(customerTwo);
+    this.api.get("/customers")
+      .subscribe(data => { this.customers = data }, error => { console.log(error) });
   }
   onSelectionChange(entry) {
     this.selectedEntry = entry;
-}
+  }
 
   deleteCustomerData() {
     console.log('Deleting customer with id: ' + this.selectedEntry);
