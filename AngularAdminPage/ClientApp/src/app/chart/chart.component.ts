@@ -68,7 +68,7 @@ export class ChartComponent implements OnInit {
     const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const data = [];
     for (const label of labels) {
-      const filteredList = this.transactions.filter(x => x.modifyDate.toDateString().includes(label));
+      const filteredList = this.transactions.filter(x => x.modifyDate.includes(label));
       data.push(filteredList.length);
     }
     // const filteredList = this.transactions;
