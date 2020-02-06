@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import { Transaction } from '../../../models/transactions';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-transaction-list',
@@ -10,6 +11,11 @@ import { Transaction } from '../../../models/transactions';
 export class TransactionListComponent implements OnInit {
   public transactions: Transaction[] = [];
   selectedAccountId: number;
+  startDate = new FormControl();
+  endDate = new FormControl();
+  myFilter = (d: Date): boolean => {
+    return d > this.startDate.value;
+  }
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -41,6 +47,15 @@ export class TransactionListComponent implements OnInit {
 
     this.transactions.push(transOne);
     this.transactions.push(transTwo);
+
+    console.log(this.startDate);
+  }
+  filterTransactions() {
+    console.log('Fetching transactions between ' + this.startDate.value.toDateString() + ' and ' + this.endDate.value.toDateString());
+  }
+  resetFilter( ) {
+    this.startDate = new FormControl();
+    this.endDate = new FormControl();
   }
 
 }

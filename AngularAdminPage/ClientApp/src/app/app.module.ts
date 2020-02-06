@@ -16,6 +16,12 @@ import { LoginComponent } from './login/login.component';
 import { BillListComponent } from './bill-list/bill-list.component';
 import { ChartComponent } from './chart/chart.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import {MatDatepickerModule} from '@angular/material';
+import {MatNativeDateModule} from '@angular/material';
+import {MatFormFieldModule} from '@angular/material';
+import {MatInputModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -48,8 +54,12 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
       { path: 'bill-list/:id', component: BillListComponent },
       { path: 'chart', component: ChartComponent },
       { path: 'edit-profile/:id', component: EditProfileComponent }
-
-    ])
+    ]),
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
