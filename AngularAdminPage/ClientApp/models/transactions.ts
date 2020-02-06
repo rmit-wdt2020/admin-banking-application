@@ -5,5 +5,5 @@ export interface Transaction {
     destinationAccountNumber?: number;
     amount: number;
     comment?: string;
-    modifyDate: Date;
+    modifyDate: string;
 }

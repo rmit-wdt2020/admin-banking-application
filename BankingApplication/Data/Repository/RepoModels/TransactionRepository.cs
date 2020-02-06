@@ -21,5 +21,10 @@ namespace RepositoryWrapper
         {
             return _context.Transaction.Where(x => x.AccountNumber == id).ToPagedListAsync(page, pagesize);
         }
+
+        public Task<List<Transaction>> GetTransactionsByAccountID(int id)
+        {
+            return _context.Transaction.Where(x => x.AccountNumber == id).ToListAsync();
+        }
     }
 }

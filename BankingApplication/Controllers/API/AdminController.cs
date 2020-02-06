@@ -57,5 +57,17 @@ namespace BankingApplication.Controllers
         {
             return _repo.Customer.GetWithAccounts(id);
         }
+
+        [HttpGet("accounts/{id}")]
+        public Task<List<Account>> GetAccountsByCustomerID(int id)
+        {
+            return _repo.Account.GetAccountsByCustomerID(id);
+        }
+
+        [HttpGet("transactions/{id}")]
+        public Task<List<Transaction>> GetTransactionsByAccountID(int id)
+        {
+            return _repo.Transaction.GetTransactionsByAccountID(id);
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace BankingApplication.Controllers {
         private int CustomerID => HttpContext.Session.GetInt32 (nameof (Customer.CustomerID)).Value;
         public async Task<IActionResult> SelectAccount () {
 
-            var accounts = await _repo.Account.GetAccountsByID(CustomerID);
+            var accounts = await _repo.Account.GetAccountsByCustomerID(CustomerID);
 
             return View (accounts);
         }
