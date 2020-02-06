@@ -17,10 +17,7 @@
       <td><input  type="radio" id="selectedAccount" name="selectedAccount" (change)="onSelectionChange(account.accountNumber)" ng-value="account" style="margin-right:10px"/>{{ account.accountNumber }}</td>
       <td>{{ account.accountType }}</td>
       <td>{{ account.balance }}</td>
-      <td>{{ account.modifyDate }}</td>
-      <td style="width: 100px"><button class="btn btn-primary" (click)="account.locked = !account.locked;toggleLock(account.accountNumber)">
-        <span>{{account.locked ? 'Unlock' : 'Lock'}}</span>
-      </button></td>
+      <td>{{ account.modifyDate.toDateString() }}</td>
     </tr>
   </tbody>
 </table>

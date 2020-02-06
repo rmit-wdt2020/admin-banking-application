@@ -20,7 +20,8 @@ export class CustomerListComponent implements OnInit {
       city: 'Melbourne',
       state: 'VIC',
       postCode: '3075',
-      phone: '12345678'
+      phone: '12345678',
+      locked: false
   };
 
   const customerTwo: Customer = {
@@ -31,7 +32,8 @@ export class CustomerListComponent implements OnInit {
     city: 'Melbourne',
     state: 'VIC',
     postCode: '3075',
-    phone: ''
+    phone: '',
+    locked: false
 };
 
     this.customers.push(customerOne);
@@ -43,6 +45,9 @@ export class CustomerListComponent implements OnInit {
 
   deleteCustomerData() {
     console.log('Deleting customer with id: ' + this.selectedEntry);
+  }
+  toggleLock(id: number) {
+    console.log('Toggling lock of customer with id ' + id);
   }
 
 }

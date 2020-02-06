@@ -7,4 +7,5 @@ export interface Customer {
     state?: string;
     postCode?: string;
     phone: string;
+    locked: boolean;
 }
