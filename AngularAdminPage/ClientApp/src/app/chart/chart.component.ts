@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { Transaction } from '../../../models/transactions';
 import {ActivatedRoute} from '@angular/router';
+import { ApiService } from '../../../src/app/services/api.service';
 
 @Component({
   selector: 'app-chart',
@@ -14,7 +15,7 @@ export class ChartComponent implements OnInit {
   selectedCustomerId: number;
   startDate: any;
   endDate: any;
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private api: ApiService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -27,57 +28,52 @@ export class ChartComponent implements OnInit {
      console.log(this.selectedAccountId);
      console.log(this.startDate);
      console.log(this.endDate);
-    const transOne: Transaction = {
-      transactionID: 1,
-      transactionType: 'W',
-      accountNumber: 4100,
-      amount: 100,
-      comment: 'First trans',
-      modifyDate: 'Jan'
-    };
-
-    const transTwo: Transaction = {
-      transactionID: 1,
-      transactionType: 'D',
-      accountNumber: 4200,
-      amount: 100,
-      comment: 'Sec trans',
-      modifyDate: 'Feb'
-    };
-
-    const transTwoo: Transaction = {
-      transactionID: 1,
-      transactionType: 'T',
-      accountNumber: 4200,
-      amount: 100,
-      comment: 'Sec trans',
-      modifyDate: 'Mar'
-    };
-
-    this.transactions.push(transOne);
-    this.transactions.push(transTwo);
-    this.transactions.push(transTwoo);
-    this.setPieChart();
-    this.setBarChart();
+     this.fetchTransactionData();
+  }
+  fetchTransactionData() {
+    // if (this.startDate != null && this.endDate != null) {
+    const source = this.api.get('/transactions/' + this.selectedAccountId);
+    // }
+    // else {
+    // const source = this.api.get('/transactions/' + this.selectedAccountId);
+    // }
+    source.subscribe(data => { this.transactions = data; }, error => { console.log(error); });
+    source.toPromise().then(x => {
+      this.changeDataForView();
+      this.setPieChart();
+      this.setBarChart();
+    });
+  }
+  changeDataForView() {
+    for (let i = 0; i < this.transactions.length; i++) {
+      const dateToBeSplit = this.transactions[i].modifyDate.toLocaleString();
+      const splittedDate = dateToBeSplit.split('T');
+      this.transactions[i].modifyDate = splittedDate[0];
+      const type = this.transactions[i] .transactionType;
+      if (type === 'W') {
+        this.transactions[i].transactionType = 'Withdraw';
+      } else if (type === 'D') {
+        this.transactions[i].transactionType = 'Deposit';
+      } else if (type === 'T') {
+        this.transactions[i].transactionType = 'Transfer';
+      } else if (type === 'B') {
+        this.transactions[i].transactionType = 'Bill Pay';
+      } else {
+        this.transactions[i].transactionType = 'Service Charge';
+      }
+    }
   }
   setBarChart() {
     const ctx = document.getElementById('barChart');
-    // const labels = this.transactions.map(item => item.accountNumber)
-    // .filter((value, index, self) => self.indexOf(value) === index);
-    // const labels = ['Withdraw', 'Deposit', 'Transfer', 'Bill Pay'];
     const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthLabels = ['-01-', '-02-', '-03-', '-04-', '-05-', '-06-', '-07-', '-08-', '-09-', '-10-', '-11-', '-12-'];
     const data = [];
-    for (const label of labels) {
+    for (const label of monthLabels) {
       const filteredList = this.transactions.filter(x => x.modifyDate.includes(label));
       data.push(filteredList.length);
     }
-    // const filteredList = this.transactions;
-    // data.push((filteredList.filter(x => x.transactionType === 'W')).length);
-    // data.push((filteredList.filter(x => x.transactionType === 'D')).length);
-    // data.push((filteredList.filter(x => x.transactionType === 'T')).length);
-    // data.push((filteredList.filter(x => x.transactionType === 'B')).length);
     const myChart = new Chart(ctx, {
-      type: 'bar',
+      type: 'line',
       data: {
         labels: labels,
         datasets: [{
@@ -87,15 +83,8 @@ export class ChartComponent implements OnInit {
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
             'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)'
-            // 'rgba(153, 102, 255, 0.2)',
-            // 'rgba(255, 159, 64, 0.2)',
-            // 'rgba(255, 99, 132, 0.2)',
-            // 'rgba(54, 162, 235, 0.2)',
-            // 'rgba(255, 206, 86, 0.2)',
-            // 'rgba(75, 192, 192, 0.2)',
-            // 'rgba(153, 102, 255, 0.2)',
-            // 'rgba(255, 159, 64, 0.2)'
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)'
           ],
           borderWidth: 1
         }]
@@ -134,13 +123,13 @@ export class ChartComponent implements OnInit {
   }
   setPieChart() {
     const ctx = document.getElementById('pieChart');
-    const labels = ['Withdraw', 'Deposit', 'Transfer', 'Bill Pay'];
+    const labels = ['Withdraw', 'Deposit', 'Transfer', 'Bill Pay', 'Service Charge'];
     const data = [];
-    const filteredList = this.transactions;
-    data.push((filteredList.filter(x => x.transactionType === 'W')).length);
-    data.push((filteredList.filter(x => x.transactionType === 'D')).length);
-    data.push((filteredList.filter(x => x.transactionType === 'T')).length);
-    data.push((filteredList.filter(x => x.transactionType === 'B')).length);
+    let filteredList = this.transactions;
+    for (const label of labels) {
+      filteredList = this.transactions.filter(x => x.transactionType.includes(label));
+      data.push(filteredList.length);
+    }
     const myChart = new Chart(ctx, {
       type: 'pie',
       data: {
@@ -151,15 +140,8 @@ export class ChartComponent implements OnInit {
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
             'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)'
-            // 'rgba(153, 102, 255, 0.2)',
-            // 'rgba(255, 159, 64, 0.2)',
-            // 'rgba(255, 99, 132, 0.2)',
-            // 'rgba(54, 162, 235, 0.2)',
-            // 'rgba(255, 206, 86, 0.2)',
-            // 'rgba(75, 192, 192, 0.2)',
-            // 'rgba(153, 102, 255, 0.2)',
-            // 'rgba(255, 159, 64, 0.2)'
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)'
           ]
         }]
       },
