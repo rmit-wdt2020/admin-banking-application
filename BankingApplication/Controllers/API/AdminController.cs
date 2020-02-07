@@ -69,5 +69,11 @@ namespace BankingApplication.Controllers
         {
             return _repo.Transaction.GetTransactionsByAccountID(id);
         }
+
+        [HttpGet("transactions/{id}:{startdate}:{enddate}")]
+        public Task<List<Transaction>> GetTransactionsByDate(int id, string startdate, string enddate)
+        {
+            return _repo.Transaction.GetWithinDate(id, DateTime.Parse(startdate), DateTime.Parse(enddate));
+        }
     }
 }

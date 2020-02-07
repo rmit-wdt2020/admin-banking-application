@@ -36,11 +36,15 @@ export class TransactionListComponent implements OnInit {
     console.log(this.startDate);
   }
   filterTransactions() {
+    this.api.get('/transactions/' + this.selectedAccountId + ':' + this.startDate.value.toDateString() + ":" + this.endDate.value.toDateString())
+      .subscribe(data => { this.transactions = data; }, error => { console.log(error) });
     console.log('Fetching transactions between ' + this.startDate.value.toDateString() + ' and ' + this.endDate.value.toDateString());
   }
   resetFilter( ) {
     this.startDate = new FormControl();
     this.endDate = new FormControl();
+    this.api.get('/transactions/' + this.selectedAccountId)
+      .subscribe(data => { this.transactions = data; }, error => { console.log(error); });
   }
 
 }
