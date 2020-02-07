@@ -29,7 +29,7 @@ namespace BankingApplication.Controllers
         [HttpGet("customers/{id}")]
         public ValueTask<Customer> Get(int id)
         {
-            return _repo.Customer.GetByID(id);
+            return  _repo.Customer.GetByID(id);
         }
 
         [HttpPost("togglelock")]

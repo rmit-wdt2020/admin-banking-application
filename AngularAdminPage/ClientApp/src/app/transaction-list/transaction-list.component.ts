@@ -55,8 +55,9 @@ export class TransactionListComponent implements OnInit {
     }
   }
   filterTransactions() {
-    this.api.get('/transactions/' + this.selectedAccountId + ':' + this.startDate.value.toDateString() + ":" + this.endDate.value.toDateString())
-      .subscribe(data => { this.transactions = data; }, error => { console.log(error) });
+    const source = this.api.get('/transactions/' + this.selectedAccountId + ':' + this.startDate.value.toDateString() + ":" + this.endDate.value.toDateString());
+    source.subscribe(data => { this.transactions = data; }, error => { console.log(error) });
+    source.toPromise().then(x => this.changeDataForView());
     console.log('Fetching transactions between ' + this.startDate.value.toDateString() + ' and ' + this.endDate.value.toDateString());
   }
   resetFilter( ) {
