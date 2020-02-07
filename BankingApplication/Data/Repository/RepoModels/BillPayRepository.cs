@@ -21,5 +21,10 @@ namespace RepositoryWrapper
         {
             return  _context.BillPay.Where(x => x.ScheduleDate < DateTime.UtcNow).ToListAsync();
         }
+
+        public Task<List<BillPay>> GetByAccountID(int id)
+        {
+            return _context.BillPay.Where(x => x.AccountNumber == id).ToListAsync();
+        }
     }
 }

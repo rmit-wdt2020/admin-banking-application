@@ -26,5 +26,13 @@ namespace RepositoryWrapper
         {
             return _context.Transaction.Where(x => x.AccountNumber == id).ToListAsync();
         }
+
+        public Task<List<Transaction>> GetWithinDate(int id, DateTime start, DateTime end)
+        {
+            return _context.Transaction.Where(x => x.AccountNumber == id)
+                .Where(x => x.ModifyDate >= start)
+                .Where(x => x.ModifyDate <= end)
+                .ToListAsync();
+        }
     }
 }
