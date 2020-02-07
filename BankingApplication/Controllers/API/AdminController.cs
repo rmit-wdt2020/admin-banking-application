@@ -52,12 +52,6 @@ namespace BankingApplication.Controllers
             return BadRequest();
         }
 
-        // [HttpGet("accounts/{id}")]
-        // public Task<Customer> GetWithAccounts(int id)
-        // {
-        //     return _repo.Customer.GetWithAccounts(id);
-        // }
-
         [HttpGet("accounts/{id}")]
         public Task<List<Account>> GetAccountsByCustomerID(int id)
         {
@@ -74,6 +68,44 @@ namespace BankingApplication.Controllers
         public Task<List<Transaction>> GetTransactionsByDate(int id, string startdate, string enddate)
         {
             return _repo.Transaction.GetWithinDate(id, DateTime.Parse(startdate), DateTime.Parse(enddate));
+        }
+
+        [HttpGet("billpay/{id}")]
+        public Task<List<BillPay>> GetBillPayByAccountID(int id)
+        {
+            return _repo.BillPay.GetByAccountID(id);
+        }
+
+        [HttpPost("billlock")]
+        public async Task<IActionResult> Post([FromBody] int id)
+        {
+            var bill = await _repo.BillPay.GetByID(id);
+            if (bill != null)
+            {
+                if (!bill.Locked)
+                {
+                    bill.Lock();
+                }
+                else
+                {
+                    bill.UnLock();
+                }
+                await _repo.SaveChanges();
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("updatecustomer")]
+        public async Task<IActionResult> Post([FromBody] Customer customer)
+        {
+            if (customer != null)
+            {
+                _repo.Customer.Update(customer);
+                await _repo.SaveChanges();
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

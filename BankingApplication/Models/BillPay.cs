@@ -42,6 +42,8 @@ namespace BankingApplication.Models {
         [Required]
         public DateTime ModifyDate { get; set; }
 
+        public bool Locked { get; set; } = false;
+
         //Method for updating bills from a billpayviewmodel object
         public void UpdateBill(BillPay bill)
         {
@@ -53,6 +55,16 @@ namespace BankingApplication.Models {
             ScheduleDate = bill.ScheduleDate;
             Period = bill.Period;
             ModifyDate = DateTime.UtcNow;
+        }
+
+        public void Lock()
+        {
+            Locked = true;
+        }
+
+        public void UnLock()
+        {
+            Locked = false;
         }
     }
 }

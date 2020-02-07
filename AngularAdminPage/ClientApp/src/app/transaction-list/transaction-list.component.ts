@@ -43,8 +43,7 @@ export class TransactionListComponent implements OnInit {
   resetFilter( ) {
     this.startDate = new FormControl();
     this.endDate = new FormControl();
-    this.api.get('/transactions/' + this.selectedAccountId)
-      .subscribe(data => { this.transactions = data; }, error => { console.log(error); });
+    this.fetchTransactionData();
   }
 
 }
