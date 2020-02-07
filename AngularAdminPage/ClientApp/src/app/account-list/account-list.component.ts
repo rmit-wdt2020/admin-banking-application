@@ -16,25 +16,23 @@ export class AccountListComponent implements OnInit {
 
   ngOnInit() {
       this.fetchAccountData();
-      this.changeDataForView();
   }
 
   fetchAccountData() {
     this.route.params.subscribe(params => {
       this.selectedCustomerId = params['id'];
       });
-    this.api.get('/accounts/' + this.selectedCustomerId)
-      .subscribe(data => { this.accounts = data; }, error => { console.log(error); });
+    const source = this.api.get('/accounts/' + this.selectedCustomerId);
+    source.subscribe(data => { this.accounts = data; }, error => { console.log(error); });
+    source.toPromise().then(x => this.changeDataForView());
     }
     changeDataForView() {
-      console.log(this.accounts.length);
       for (let i = 0; i < this.accounts.length; i++) {
-        const dateToBeSplit = this.accounts[0].modifyDate;
+        const dateToBeSplit = this.accounts[0].modifyDate.toLocaleString();
         const splittedDate = dateToBeSplit.split('T');
-        console.log(splittedDate);
         this.accounts[i].modifyDate = splittedDate[0];
     }
-  } 
+  }
   onSelectionChange(entry) {
     this.selectedEntry = entry;
 }

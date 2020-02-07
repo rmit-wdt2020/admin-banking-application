@@ -31,9 +31,28 @@ export class TransactionListComponent implements OnInit {
   }
 
   fetchTransactionData() {
-    this.api.get('/transactions/' + this.selectedAccountId)
-      .subscribe(data => { this.transactions = data; }, error => { console.log(error); });
-    console.log(this.startDate);
+    const source = this.api.get('/transactions/' + this.selectedAccountId);
+    source.subscribe(data => { this.transactions = data; }, error => { console.log(error); });
+    source.toPromise().then(x => this.changeDataForView());
+  }
+  changeDataForView() {
+    for (let i = 0; i < this.transactions.length; i++) {
+      const dateToBeSplit = this.transactions[0].modifyDate.toLocaleString();
+      const splittedDate = dateToBeSplit.split('T');
+      this.transactions[i].modifyDate = splittedDate[0];
+      const type = this.transactions[i] .transactionType;
+      if (type === 'W') {
+        this.transactions[i].transactionType = 'Withdraw';
+      } else if (type === 'D') {
+        this.transactions[i].transactionType = 'Deposit';
+      } else if (type === 'T') {
+        this.transactions[i].transactionType = 'Transfer';
+      } else if (type === 'B') {
+        this.transactions[i].transactionType = 'Bill pay';
+      } else {
+        this.transactions[i].transactionType = 'Service Charge';
+      }
+    }
   }
   filterTransactions() {
     console.log('Fetching transactions between ' + this.startDate.value.toDateString() + ' and ' + this.endDate.value.toDateString());
