@@ -46,7 +46,7 @@ export class ChartComponent implements OnInit {
   }
   changeDataForView() {
     for (let i = 0; i < this.transactions.length; i++) {
-      const dateToBeSplit = this.transactions[0].modifyDate.toLocaleString();
+      const dateToBeSplit = this.transactions[i].modifyDate.toLocaleString();
       const splittedDate = dateToBeSplit.split('T');
       this.transactions[i].modifyDate = splittedDate[0];
       const type = this.transactions[i] .transactionType;
@@ -73,7 +73,7 @@ export class ChartComponent implements OnInit {
       data.push(filteredList.length);
     }
     const myChart = new Chart(ctx, {
-      type: 'bar',
+      type: 'line',
       data: {
         labels: labels,
         datasets: [{

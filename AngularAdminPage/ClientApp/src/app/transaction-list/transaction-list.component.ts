@@ -37,7 +37,7 @@ export class TransactionListComponent implements OnInit {
   }
   changeDataForView() {
     for (let i = 0; i < this.transactions.length; i++) {
-      const dateToBeSplit = this.transactions[0].modifyDate.toLocaleString();
+      const dateToBeSplit = this.transactions[i].modifyDate.toLocaleString();
       const splittedDate = dateToBeSplit.split('T');
       this.transactions[i].modifyDate = splittedDate[0];
       const type = this.transactions[i] .transactionType;

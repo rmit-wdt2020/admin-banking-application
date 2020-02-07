@@ -25,5 +25,9 @@
 <div class="text-center" style="margin-top:30px">
     <button class="btn btn-secondary" style="margin-right:30px" [routerLink]="['/customer-list']"> < Back to Customer List</button>
     <button class="btn btn-primary" [disabled]="!selectedEntry" style="margin-right:30px" [routerLink]="['/transaction-list', selectedCustomerId, selectedEntry]">View Transactions</button>
-    <button class="btn btn-primary" [disabled]="!selectedEntry" [routerLink]="['/bill-list', selectedCustomerId, selectedEntry]">View Bills</button>
+    <button class="btn btn-primary" [disabled]="!selectedEntry" style="margin-right:30px" [routerLink]="['/bill-list', selectedCustomerId, selectedEntry]">View Bills</button>
+    <button class="btn btn-primary" style="margin-right:30px" (click)="showGraph=!showGraph;setBarChart()">{{!showGraph ? 'Show Graphical Data' : 'Hide Graphical Data'}}</button>
+</div>
+<div class="text-center" style="margin-top:30px;margin-left:300px">
+<canvas id="barChart" class="text-center" width="500" height="500"></canvas>
 </div>
