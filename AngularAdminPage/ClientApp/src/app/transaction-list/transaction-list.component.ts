@@ -25,8 +25,6 @@ export class TransactionListComponent implements OnInit {
       this.selectedCustomerId = params['customerid'];
       this.selectedAccountId = params['accountid'];
      });
-      console.log(this.selectedAccountId);
-      console.log(this.selectedCustomerId);
       this.fetchTransactionData();
   }
 
@@ -59,7 +57,6 @@ export class TransactionListComponent implements OnInit {
     .get('/transactions/' + this.selectedAccountId + ':' + this.startDate.value.toDateString() + ':' + this.endDate.value.toDateString());
     source.subscribe(data => { this.transactions = data; }, error => { console.log(error); });
     source.toPromise().then(x => this.changeDataForView());
-    console.log(this.startDate.value.toDateString());
   }
   resetFilter( ) {
     this.startDate = new FormControl();

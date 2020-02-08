@@ -24,16 +24,11 @@ export class ChartComponent implements OnInit {
       this.startDate = params['startdate'];
       this.endDate = params['enddate'];
      });
-     console.log(this.selectedCustomerId);
-     console.log(this.selectedAccountId);
-     console.log(this.startDate);
-     console.log(this.endDate);
      this.fetchTransactionData();
   }
   fetchTransactionData() {
     let source;
     if (this.startDate !== '' && this.endDate !== '') {
-      console.log('here');
       source = this.api
       .get('/transactions/' + this.selectedAccountId + ':' + this.startDate + ':' + this.endDate);
     } else {

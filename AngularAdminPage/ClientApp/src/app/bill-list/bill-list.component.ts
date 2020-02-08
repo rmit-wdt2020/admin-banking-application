@@ -37,7 +37,6 @@ export class BillListComponent implements OnInit {
     }
   }
   toggleBlock(id: string) {
-    console.log('Toggling block of bill with id ' + id);
     this.api.post('/billlock', id).subscribe(error => {console.log(error); });
   }
 

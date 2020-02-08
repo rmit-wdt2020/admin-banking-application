@@ -32,7 +32,6 @@ export class AccountListComponent implements OnInit {
     source.toPromise().then(x => {
       this.changeDataForView();
       this.fetchSavingTransData();
-      console.log(this.accounts);
     });
   }
   fetchSavingTransData() {
@@ -60,7 +59,6 @@ export class AccountListComponent implements OnInit {
     }
   }
   setBarChart() {
-    console.log(this.data);
     const ctx = document.getElementById('barChart');
     if (this.showGraph === false) {
        ctx.style.display = 'none';
