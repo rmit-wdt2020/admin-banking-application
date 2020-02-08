@@ -1,7 +1,7 @@
 <h1 class="row justify-content-center">Edit Profile</h1>
 <div class="row justify-content-center">
    <div class="col-md-4">
-      <form *ngIf="editProfileForm || customerToBeEdited" [formGroup]="editProfileForm" (ngSubmit)="editProfile()" #formDir="ngForm">
+      <form [formGroup]="editProfileForm" (ngSubmit)="editProfile()" #formDir="ngForm">
          <div class="form-group">
             <label class="control-label">Name:</label>
             <input class="form-control" type="text" formControlName="customername"> 

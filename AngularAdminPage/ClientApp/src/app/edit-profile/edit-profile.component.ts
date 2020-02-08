@@ -17,21 +17,28 @@ export class EditProfileComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private _fb: FormBuilder, private api: ApiService) {
     this.route.params.subscribe(params => {
       this.selectedCustomerId = params['id'];
+      this.editProfileForm = _fb.group({
+        customername: ['', [Validators.required, Validators.maxLength(50)]],
+        phone: ['', [Validators.required, Validators.pattern('^[(]61[)][\\s][-][\\s][1-9]\\d{7}$')]],
+        tfn: ['', [Validators.pattern('[0-9]\\d{10}')]],
+        address: ['', [Validators.maxLength(50)]],
+        city: ['', [Validators.pattern('^[A-Z][a-z]+$'), Validators.maxLength(40)]],
+        state: ['', [Validators.pattern('[A-Z]{3}')]],
+        postcode: ['', [Validators.pattern('[1-9]\\d{3}')]]
+      });
     });
    }
 
   ngOnInit() {
     this.fetchCustomerData();
     }
-  fetchCustomerData() {
-    //this.route.params.subscribe(params => {
-    //  this.selectedCustomerId = params['id'];
-    //  });
+  async fetchCustomerData() {
     console.log(this.selectedCustomerId);
 
-    const source = this.api.get("/customers/" + this.selectedCustomerId);
+    const source = await this.api.get("/customers/" + this.selectedCustomerId);
     source.subscribe(data => { this.customerToBeEdited = data; }, error => { console.log(error); });
     source.toPromise().then(x => {
+      if(this.customerToBeEdited)
       this.editProfileForm = this._fb.group({
         customername: [this.customerToBeEdited.customerName, [Validators.required, Validators.maxLength(50)]],
         phone: [this.customerToBeEdited.phone, [Validators.required, Validators.pattern('^[(]61[)][\\s][-][\\s][1-9]\\d{7}$')]],
@@ -43,6 +50,7 @@ export class EditProfileComponent implements OnInit {
       });
     })
   }
+
   editProfile() {
     if (!this.editProfileForm.valid) {
       console.log(this.customerToBeEdited);
