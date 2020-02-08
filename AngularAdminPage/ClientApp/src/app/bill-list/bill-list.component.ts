@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Billpay } from '../../../models/billpay';
 import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../src/app/services/api.service';
 
 @Component({
   selector: 'app-bill-list',
@@ -11,46 +12,33 @@ export class BillListComponent implements OnInit {
   public bills: Billpay[] = [];
   selectedAccountId: number;
   selectedCustomerId: number;
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private api: ApiService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.selectedCustomerId = params['customerid'];
       this.selectedAccountId = params['accountid'];
      });
-      console.log(this.selectedAccountId);
-      console.log(this.selectedCustomerId);
       this.fetchBillData();
   }
   fetchBillData() {
-    const billOne: Billpay = {
-      id: 1,
-      accountNumber: 4100,
-      payeeId: 1,
-      amount: 100,
-      scheduleDate: new Date('2019-01-16'),
-      period: 'Monthly',
-      modifyDate: new Date('2019-01-16'),
-      blocked: false
-  };
-
-  const billTwo: Billpay = {
-    id: 2,
-    accountNumber: 4200,
-    payeeId: 2,
-    amount: 200,
-    scheduleDate: new Date('2019-01-16'),
-    period: 'Monthly',
-    modifyDate: new Date('2019-01-16'),
-    blocked: false
-};
-
-
-    this.bills.push(billOne);
-    this.bills.push(billTwo);
+    const source = this.api.get('/billpay/' + this.selectedAccountId);
+    source.subscribe(data => { this.bills = data; }, error => { console.log(error); });
+    source.toPromise().then(x => this.changeDataForView());
   }
-  toggleBlock(id: number) {
+  changeDataForView() {
+    for (let i = 0; i < this.bills.length; i++) {
+      const dateToBeSplit = this.bills[i].modifyDate.toLocaleString();
+      const splittedDate = dateToBeSplit.split('T');
+      this.bills[i].modifyDate = splittedDate[0];
+      const scheduledDate = this.bills[i].scheduleDate.toLocaleString();
+      const scheduledDateModified = scheduledDate.replace('T', ' ');
+      this.bills[i].scheduleDate = scheduledDateModified;
+    }
+  }
+  toggleBlock(id: string) {
     console.log('Toggling block of bill with id ' + id);
+    this.api.post('/billlock', id).subscribe(error => {console.log(error); });
   }
 
 }

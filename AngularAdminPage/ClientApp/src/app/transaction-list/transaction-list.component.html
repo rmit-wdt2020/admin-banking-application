@@ -23,7 +23,6 @@
   <thead>
     <tr>
       <th>Type</th>
-      <th>Acc Number</th>
       <th>Destination Acc Number</th>
       <th>Amount</th> 
       <th>Comment</th>
@@ -33,7 +32,6 @@
   <tbody>
     <tr *ngFor="let transaction of transactions">
       <td>{{ transaction.transactionType }}</td>
-      <td>{{ transaction.accountNumber }}</td>
       <td>{{ transaction.destinationAccountNumber }}</td>
       <td>{{ transaction.amount }}</td>
       <td>{{ transaction.comment }}</td>

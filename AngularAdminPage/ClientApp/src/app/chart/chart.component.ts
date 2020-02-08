@@ -31,12 +31,14 @@ export class ChartComponent implements OnInit {
      this.fetchTransactionData();
   }
   fetchTransactionData() {
-    // if (this.startDate != null && this.endDate != null) {
-    const source = this.api.get('/transactions/' + this.selectedAccountId);
-    // }
-    // else {
-    // const source = this.api.get('/transactions/' + this.selectedAccountId);
-    // }
+    let source;
+    if (this.startDate !== '' && this.endDate !== '') {
+      console.log('here');
+      source = this.api
+      .get('/transactions/' + this.selectedAccountId + ':' + this.startDate + ':' + this.endDate);
+    } else {
+      source = this.api.get('/transactions/' + this.selectedAccountId);
+    }
     source.subscribe(data => { this.transactions = data; }, error => { console.log(error); });
     source.toPromise().then(x => {
       this.changeDataForView();

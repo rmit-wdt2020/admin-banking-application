@@ -21,6 +21,11 @@ namespace RepositoryWrapper
             return _context.Account.Where(x => x.AccountNumber == id).Include(x => x.Transactions).FirstOrDefaultAsync();
         }
 
+        public Task<List<Account>> GetWithTransactionsByCustomerId(int id)
+        {
+            return _context.Account.Where(x => x.CustomerID == id).Include(x => x.Transactions).ToListAsync();
+        }
+
         public Task<Account> GetWithBills(int id)
         {
             return _context.Account.Where(x => x.AccountNumber == id).Include(x => x.Bills).FirstOrDefaultAsync();

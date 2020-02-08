@@ -32,6 +32,19 @@ namespace BankingApplication.Controllers
             return  _repo.Customer.GetByID(id);
         }
 
+        [HttpPost("deletecustomer")]
+        public async Task<IActionResult> DeleteCustomer([FromBody] int id)
+        {
+            var customer =  await _repo.Customer.GetByID(id);
+            if(customer != null) 
+            {
+            await _repo.Customer.Delete(customer);
+            await _repo.SaveChanges();
+            return Ok();
+            }
+            return BadRequest();
+        }
+
         [HttpPost("togglelock")]
         public async Task<IActionResult> Post([FromBody] string id)
         {
