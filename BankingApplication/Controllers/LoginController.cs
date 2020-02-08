@@ -30,7 +30,12 @@ namespace BankingApplication.Controllers
         {
             //LINQ query for eager loading login
             var login = await _repo.Login.GetWithCustomer(userID);
-            if(login.Locked == true)
+            if (login == null)
+            {
+                ModelState.AddModelError("LoginFailed", "Incorrect userid or password");
+                return View(new LoginViewModel { UserID = userID });
+            }
+            if (login.Locked == true)
             {
                 ModelState.AddModelError("LoginFailed", "This account is locked.");
                 return View(new LoginViewModel { UserID = userID });

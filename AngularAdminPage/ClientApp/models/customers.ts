@@ -3,7 +3,7 @@ import { Login } from "./login";
 export interface Customer {
     customerID: number;
     customerName: string;
-    TFN?: string;
+    tfn?: string;
     address?: string;
     city?: string;
     state?: string;
