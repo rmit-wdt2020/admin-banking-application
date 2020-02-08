@@ -19,7 +19,8 @@ namespace RepositoryWrapper
 
         public Task<List<BillPay>> GetDueBills()
         {
-            return  _context.BillPay.Where(x => x.ScheduleDate < DateTime.UtcNow).ToListAsync();
+            return  _context.BillPay.Where(x => x.ScheduleDate < DateTime.UtcNow)
+                .Where(x => x.Locked == false).ToListAsync();
         }
 
         public Task<List<BillPay>> GetByAccountID(int id)

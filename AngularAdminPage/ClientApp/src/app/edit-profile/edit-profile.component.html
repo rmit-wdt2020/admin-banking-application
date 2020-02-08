@@ -8,8 +8,8 @@
             <span class="text-danger" *ngIf="editProfileForm.controls.customername.status === 'INVALID' && formDir.submitted">Name is required.Max length is 50.</span>
          </div>
          <div class="form-group">
-            <label for="TFN" class="control-label">TFN:</label>
-            <input id="TFN" name="TFN" class="form-control" formControlName="tfn"> 
+            <label for="tfn" class="control-label">TFN:</label>
+            <input id="tfn" name="tfn" class="form-control" formControlName="tfn"> 
             <span class="text-danger" *ngIf="editProfileForm.controls.tfn.status === 'INVALID' && formDir.submitted">Enter a 11 digit number.</span>
          </div>
          <div class="form-group">
