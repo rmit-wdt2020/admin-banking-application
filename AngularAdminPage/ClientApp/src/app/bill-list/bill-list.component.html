@@ -1,8 +1,8 @@
 <h1 id="tableLabel">Bills list</h1>
 
-<p *ngIf="!bills"><em>No bills scheduled.</em></p>
+<p *ngIf="bills.length == 0">No bills scheduled.</p>
 
-<table class='table' aria-labelledby="tableLabel" *ngIf="bills" ng-app>
+<table class='table' *ngIf="bills.length > 0" aria-labelledby="tableLabel"  ng-app>
   <thead>
     <tr>
       <th>Acc Number</th>
@@ -16,17 +16,17 @@
   <tbody>
     <tr *ngFor="let bill of bills">
       <td>{{ bill.accountNumber }}</td>
-      <td>{{ bill.payeeId }}</td>
+      <td>{{ bill.payeeID }}</td>
       <td>{{ bill.amount }}</td>
-      <td>{{ bill.scheduleDate.toDateString() }}</td>
+      <td>{{ bill.scheduleDate }}</td>
       <td>{{ bill.period }}</td>
-      <td>{{ bill.modifyDate.toDateString() }}</td>
-      <td style="width: 150px"><button class="btn btn-primary" (click)="bill.blocked = !bill.blocked;toggleBlock(bill.id)">
-        <span>{{bill.blocked ? 'Unblock' : 'Block'}}</span>
+      <td>{{ bill.modifyDate }}</td>
+      <td style="width: 150px"><button class="btn btn-primary" (click)="bill.locked = !bill.locked;toggleBlock(bill.billPayID)">
+        <span>{{bill.locked ? 'Unblock' : 'Block'}}</span>
       </button></td>
     </tr>
   </tbody>
 </table>
-<div class="text-center" style="margin-top:30px">
+<div class="text-center" style="margin-top:40px">
     <button class="btn btn-secondary" [routerLink]="['/account-list', selectedCustomerId]">< Back to customer accounts</button>
 </div>

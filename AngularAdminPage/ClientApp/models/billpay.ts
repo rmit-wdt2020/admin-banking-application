@@ -1,10 +1,10 @@
 export interface Billpay {
-    id: number;
+    billPayID: number;
     accountNumber: Number;
-    payeeId: number;
+    payeeID: number;
     amount: number;
-    scheduleDate: Date;
+    scheduleDate: string;
     period: string;
-    modifyDate: Date;
-    blocked: boolean;
+    modifyDate: string;
+    locked: boolean;
 }
