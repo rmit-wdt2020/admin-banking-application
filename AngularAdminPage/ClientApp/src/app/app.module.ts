@@ -13,7 +13,6 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { AccountListComponent } from './account-list/account-list.component';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
-import { LoginComponent } from './login/login.component';
 import { BillListComponent } from './bill-list/bill-list.component';
 import { ChartComponent } from './chart/chart.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
@@ -34,7 +33,6 @@ import {MatInputModule} from '@angular/material';
     CustomerListComponent,
     AccountListComponent,
     TransactionListComponent,
-    LoginComponent,
     BillListComponent,
     ChartComponent,
     EditProfileComponent
@@ -51,7 +49,6 @@ import {MatInputModule} from '@angular/material';
       { path: 'customer-list', component: CustomerListComponent },
       { path: 'account-list/:id', component: AccountListComponent },
       { path: 'transaction-list/:customerid/:accountid', component: TransactionListComponent },
-      { path: 'login', component: LoginComponent },
       { path: 'bill-list/:customerid/:accountid', component: BillListComponent },
       { path: 'chart/:customerid/:accountid/:startdate/:enddate', component: ChartComponent },
       { path: 'edit-profile/:id', component: EditProfileComponent }

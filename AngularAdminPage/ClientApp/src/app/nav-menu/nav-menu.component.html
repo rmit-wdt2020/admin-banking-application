@@ -20,16 +20,19 @@
         [ngClass]="{ show: isExpanded }"
       >
         <ul class="navbar-nav flex-grow">
-          <li
-            class="nav-item"
-            [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-              <a class="nav-link text-dark"  (click)="logout()" *ngIf="loggedIn == 'true'">Logout</a>
-              <a class="nav-link text-dark"  (click)="login()" *ngIf="loggedIn == 'false'">Login</a>
+          <li class="nav-item">
+            <form #myform = "ngForm" (ngSubmit) = "onSubmit(myform)" class="form-inline" *ngIf="!loggedIn">
+              <div>
+                 <input id="AdminID" name="AdminID" class="form-control mr-lg-2" ngModel />
+              </div>
+              <div>
+                 <input type="password" id="Password" name="Password" class="form-control mr-lg-2" ngModel />
+              </div>
+              <div>
+                 <input type="submit" value="Login" class="btn btn-primary"  />
+              </div>
+           </form>
+           <a class="nav-link text-dark" [routerLink]="['/']" (click)="loggedIn=!loggedIn"*ngIf="loggedIn">Logout</a>
           </li>
         </ul>
       </div>
