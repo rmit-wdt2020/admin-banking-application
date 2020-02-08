@@ -5,7 +5,6 @@
 <table class='table' *ngIf="bills.length > 0" aria-labelledby="tableLabel"  ng-app>
   <thead>
     <tr>
-      <th>Acc Number</th>
       <th>Payee Number</th>
       <th>Amount</th>
       <th>Scheduled Date</th>
@@ -15,7 +14,6 @@
   </thead>
   <tbody>
     <tr *ngFor="let bill of bills">
-      <td>{{ bill.accountNumber }}</td>
       <td>{{ bill.payeeID }}</td>
       <td>{{ bill.amount }}</td>
       <td>{{ bill.scheduleDate }}</td>
