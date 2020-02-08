@@ -13,7 +13,7 @@ import { map } from 'rxjs/operators';
 })
 export class CustomerListComponent implements OnInit {
   public customers: Customer[] = [];
-  selectedEntry: any;
+  selectedEntry: number;
   constructor(private api: ApiService) { }
 
   ngOnInit() {
@@ -28,8 +28,8 @@ export class CustomerListComponent implements OnInit {
   }
 
   deleteCustomerData() {
-    this.api.post('/deletecustomer', this.selectedEntry).subscribe(error => {console.log(error); });
-    this.fetchCustomerData();
+    const source = this.api.post('/deletecustomer', this.selectedEntry);
+    source.toPromise().then(x => this.fetchCustomerData());
   }
   toggleLock(id: string) {
     this.api.post('/togglelock', id).subscribe(error => {console.log(error); });
