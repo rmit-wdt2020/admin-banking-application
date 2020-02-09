@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Customer } from '../../../models/customers';
 import * as $ from 'jquery';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -14,10 +15,13 @@ import { map } from 'rxjs/operators';
 export class CustomerListComponent implements OnInit {
   public customers: Customer[] = [];
   selectedEntry: number;
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private router: Router) { }
 
   ngOnInit() {
     this.fetchCustomerData();
+    this.router.events.subscribe(val => {
+      this.fetchCustomerData();
+  });
   }
   fetchCustomerData() {
     this.api.get('/customers')
