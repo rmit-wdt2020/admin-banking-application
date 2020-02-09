@@ -25,4 +25,8 @@ It is made secure through using a route guard service that will redirect anyone 
 
 The admin page makes API calls to the banking application which is handled under AdminController. AdminController uses a repository pattern utilized in the previous version of our assignment to provide data and control to the admin page via API requests. 
 
-Other features implemented in this project include login locking, status code error pages and bill locking. All of which are implemented on the net core application side.
+Other features implemented in this project include login locking, status code error pages, user timeout and bill locking. All of which are implemented on the net core application side.
+
+References:
+Custom error page setup 
+https://gooroo.io/GoorooTHINK/Article/17086/Creating-Custom-Error-Pages-in-ASPNET-core-10/32407
