@@ -11,6 +11,8 @@ Project runs in Visual Studio
 
 This project is a dual project running under a single solution, in order to run both projects simultaneously open the properties of the solution and set it to multiple startup projects with both projects set to "Start".
 
+Angular page may also be missing packages as the node-module folder is not included here. Run a npm install or update in the ClientApp folder to resolve this.
+
 Administration page created in Angular
 
 Should the admin application be broken. Please make sure the ports in the APIInterceptor service are set to whatever port number Visual Studio assigns to the BankingApplication project on runtime.
