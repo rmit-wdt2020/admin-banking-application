@@ -26,10 +26,5 @@ namespace RepositoryWrapper
         {
             return _context.Customer.Include(x => x.Login).ToListAsync();
         }
-
-        public new async Task Delete(Customer entity)
-        {
-             _context.Set<Customer>().Remove(entity);
-        }
     }
 }

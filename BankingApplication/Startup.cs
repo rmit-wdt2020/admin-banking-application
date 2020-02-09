@@ -36,6 +36,7 @@ namespace BankingApplication
             });
             services.AddDbContext<BankAppContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("BankAppContext")));
+            //Repository Service (Wrapper around a generic repository pattern)
             services.AddTransient<Wrapper>();
             services.AddCors();
             services.AddSession(options =>
@@ -44,8 +45,10 @@ namespace BankingApplication
                 options.Cookie.IsEssential = true;
                 options.IdleTimeout = TimeSpan.FromMinutes(1);
             });
-            //Billpayservice for background checking bills
+            //BillPayService for background checking bills
             services.AddHostedService<BillPayService>();
+            //CheckLockService for background checking locked accounts
+            services.AddHostedService<CheckLockService>();
             services.AddControllersWithViews().AddNewtonsoftJson();
         }
 
