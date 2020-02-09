@@ -23,6 +23,7 @@ export class AccountListComponent implements OnInit {
   ngOnInit() {
       this.fetchAccountData();
   }
+  // Populating accounts data to be shown in the view.
   fetchAccountData() {
     this.route.params.subscribe(params => {
       this.selectedCustomerId = params['id'];
@@ -32,9 +33,10 @@ export class AccountListComponent implements OnInit {
     source.toPromise().then(x => {
       this.changeDataForView();
       this.fetchSavingTransData();
-      console.log(this.accounts);
     });
   }
+  // Fetching transactions in savings account for graphing.
+  // Pushing the length of data in this.data array for y axis.
   fetchSavingTransData() {
     const source = this.api.get('/transactions/' + this.accounts[0].accountNumber);
     source.subscribe(data => { this.savingTransactions = data; }, error => { console.log(error); });
@@ -45,6 +47,8 @@ export class AccountListComponent implements OnInit {
       }
     });
   }
+  // Fetching transactions in checkings account for graphing.
+   // Pushing the length of data in this.data array for y axis.
   fetchCheckingTransData() {
     const source = this.api.get('/transactions/' + this.accounts[1].accountNumber);
     source.subscribe(data => { this.checkingTransactions = data; }, error => { console.log(error); });
@@ -52,6 +56,7 @@ export class AccountListComponent implements OnInit {
       this.data.push(this.checkingTransactions.length);
     });
   }
+  // Changing the way dates are supposed to appear on the screen.
   changeDataForView() {
       for (let i = 0; i < this.accounts.length; i++) {
         const dateToBeSplit = this.accounts[0].modifyDate.toLocaleString();
@@ -60,8 +65,8 @@ export class AccountListComponent implements OnInit {
     }
   }
   setBarChart() {
-    console.log(this.data);
     const ctx = document.getElementById('barChart');
+    // Showing and hiding graph every time show/hide graph button is clicked.
     if (this.showGraph === false) {
        ctx.style.display = 'none';
     } else {

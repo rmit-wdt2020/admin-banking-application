@@ -23,7 +23,7 @@ export class NavMenuComponent implements OnInit {
   toggle() {
     this.isExpanded = !this.isExpanded;
   }
-
+  // Loggin in admin if successfull and redirecting to customer list page.
   onSubmit(form: NgForm) {
     if (form.value.AdminID === 'admin' && form.value.Password === 'admin') {
       this.loggedIn = true;

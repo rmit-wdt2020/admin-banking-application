@@ -18,34 +18,33 @@ export class ChartComponent implements OnInit {
   constructor(private route: ActivatedRoute, private api: ApiService) { }
 
   ngOnInit() {
+    // Getting the filters set in previous page.
     this.route.params.subscribe(params => {
       this.selectedCustomerId = params['customerid'];
       this.selectedAccountId = params['accountid'];
       this.startDate = params['startdate'];
       this.endDate = params['enddate'];
      });
-     console.log(this.selectedCustomerId);
-     console.log(this.selectedAccountId);
-     console.log(this.startDate);
-     console.log(this.endDate);
      this.fetchTransactionData();
   }
+  // Getting filtered transaction data based on filters.
   fetchTransactionData() {
     let source;
     if (this.startDate !== '' && this.endDate !== '') {
-      console.log('here');
       source = this.api
       .get('/transactions/' + this.selectedAccountId + ':' + this.startDate + ':' + this.endDate);
     } else {
       source = this.api.get('/transactions/' + this.selectedAccountId);
     }
     source.subscribe(data => { this.transactions = data; }, error => { console.log(error); });
+    // Setting up data for the charts after data is fetched.
     source.toPromise().then(x => {
       this.changeDataForView();
       this.setPieChart();
       this.setBarChart();
     });
   }
+  // Changing the way dates and transaction types are supposed to appear on the screen.
   changeDataForView() {
     for (let i = 0; i < this.transactions.length; i++) {
       const dateToBeSplit = this.transactions[i].modifyDate.toLocaleString();

@@ -55,13 +55,11 @@ export class EditProfileComponent implements OnInit {
 
   editProfile() {
     if (!this.editProfileForm.valid) {
-      console.log(this.customerToBeEdited);
       return;
     }
     this.customerToBeEdited = this.editProfileForm.value;
     this.customerToBeEdited.customerID = this.selectedCustomerId;
     this.api.post("/updatecustomer", this.customerToBeEdited).subscribe(error => console.log(error));
-      console.log(this.customerToBeEdited);
       this.router.navigate(['\customer-list']);
   }
 
