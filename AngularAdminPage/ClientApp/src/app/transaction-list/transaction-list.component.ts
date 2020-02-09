@@ -27,12 +27,13 @@ export class TransactionListComponent implements OnInit {
      });
       this.fetchTransactionData();
   }
-
+  // Populating transactions data to be shown in the view.
   fetchTransactionData() {
     const source = this.api.get('/transactions/' + this.selectedAccountId);
     source.subscribe(data => { this.transactions = data; }, error => { console.log(error); });
     source.toPromise().then(x => this.changeDataForView());
   }
+  // Changing the way dates and transaction types are supposed to appear on the screen.
   changeDataForView() {
     for (let i = 0; i < this.transactions.length; i++) {
       const dateToBeSplit = this.transactions[i].modifyDate.toLocaleString();
@@ -52,12 +53,14 @@ export class TransactionListComponent implements OnInit {
       }
     }
   }
+  // Filtering transactions based on user input.
   filterTransactions() {
     const source = this.api
     .get('/transactions/' + this.selectedAccountId + ':' + this.startDate.value.toDateString() + ':' + this.endDate.value.toDateString());
     source.subscribe(data => { this.transactions = data; }, error => { console.log(error); });
     source.toPromise().then(x => this.changeDataForView());
   }
+  // Reloading all transactions on filter reset.
   resetFilter( ) {
     this.startDate = new FormControl();
     this.endDate = new FormControl();

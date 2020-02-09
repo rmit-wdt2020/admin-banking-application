@@ -21,11 +21,13 @@ export class BillListComponent implements OnInit {
      });
       this.fetchBillData();
   }
+  // Populating bills data to be shown in the view.
   fetchBillData() {
     const source = this.api.get('/billpay/' + this.selectedAccountId);
     source.subscribe(data => { this.bills = data; }, error => { console.log(error); });
     source.toPromise().then(x => this.changeDataForView());
   }
+  // Changing the way dates are supposed to appear on the screen.
   changeDataForView() {
     for (let i = 0; i < this.bills.length; i++) {
       const dateToBeSplit = this.bills[i].modifyDate.toLocaleString();
@@ -36,6 +38,7 @@ export class BillListComponent implements OnInit {
       this.bills[i].scheduleDate = scheduledDateModified;
     }
   }
+  // Toggling the lock set on a bill.
   toggleBlock(id: string) {
     this.api.post('/billlock', id).subscribe(error => {console.log(error); });
   }
