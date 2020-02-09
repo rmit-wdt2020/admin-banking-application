@@ -36,6 +36,19 @@ export class BillListComponent implements OnInit {
       const scheduledDate = this.bills[i].scheduleDate.toLocaleString();
       const scheduledDateModified = scheduledDate.replace('T', ' ');
       this.bills[i].scheduleDate = scheduledDateModified;
+      const type = this.bills[i].period.toString();
+      // Period is stored as enum on .net side and its ascii value is retrieved in json api call.
+      // Onceoff as 'S' which is ascii 83, Monthly as 'M' which is ascii 77, Quaterly as 'Q' which
+      // is ascii 81 and Anually as 'Y' which is 89.
+      if (type === '83') {
+        this.bills[i].period = 'OnceOff';
+      } else if (type === '77') {
+        this.bills[i].period = 'Monthly';
+      } else if (type === '81') {
+        this.bills[i].period = 'Quarterly';
+      } else if (type === '89') {
+        this.bills[i].period = 'Annually';
+      } else {}
     }
   }
   // Toggling the lock set on a bill.
