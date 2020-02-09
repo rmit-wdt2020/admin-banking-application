@@ -7,7 +7,10 @@ Vineet Bugtani - s3734938
 
 Equal contribution by both assignment partners
 
-Project runs in Visual Studio 
+Project runs in Visual Studio
+
+Solution File:
+\AngularAdminPage\AngularAdminPage.sln 
 
 This project is a dual project running under a single solution, in order to run both projects simultaneously open the properties of the solution and set it to multiple startup projects with both projects set to "Start".
 
