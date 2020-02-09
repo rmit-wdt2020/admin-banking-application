@@ -8,6 +8,7 @@
     <tr>
       <th>Name</th>
       <th>Address</th>
+      <th>TFN</th>
       <th>City</th>
       <th>State</th>
       <th>Postcode</th>
@@ -19,6 +20,7 @@
     <tr *ngFor="let customer of customers">
       <td><input  type="radio" name="selectCustomer" (change)="onSelectionChange(customer.customerID)" ng-value="customerID" style="margin-right:10px"/>{{ customer.customerName }}</td>
       <td>{{ customer.address }}</td>
+      <td>{{customer.tfn}}</td>
       <td>{{ customer.city }}</td>
       <td>{{ customer.state }}</td>
       <td>{{ customer.postCode }}</td>
