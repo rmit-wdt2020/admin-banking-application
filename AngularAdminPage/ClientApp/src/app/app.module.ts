@@ -9,8 +9,6 @@ import { APP_BASE_HREF } from '@angular/common';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { AccountListComponent } from './account-list/account-list.component';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
@@ -29,8 +27,6 @@ import {MatInputModule} from '@angular/material';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
     CustomerListComponent,
     AccountListComponent,
     TransactionListComponent,
@@ -45,8 +41,6 @@ import {MatInputModule} from '@angular/material';
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
       { path: 'customer-list', component: CustomerListComponent, canActivate: [RouteGuard] },
       { path: 'account-list/:id', component: AccountListComponent, canActivate: [RouteGuard] },
       { path: 'transaction-list/:customerid/:accountid', component: TransactionListComponent, canActivate: [RouteGuard] },
