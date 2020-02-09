@@ -1,6 +1,8 @@
 import { Component, OnInit, Injectable, NgModule, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { RouteGuard } from '../services/routeguard.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -9,9 +11,13 @@ import { NgForm } from '@angular/forms';
 })
 export class NavMenuComponent implements OnInit {
   @Input()
-  loggedIn: any;
+  loggedIn: boolean = false;
   isExpanded = false;
-  constructor(private router: Router) {}
+  constructor(private router: Router, private guard: RouteGuard, ) {
+    if (localStorage.getItem('loggedIn')) {
+      this.loggedIn = true
+    }
+  }
 
   ngOnInit() {
   }
@@ -26,8 +32,17 @@ export class NavMenuComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     if (form.value.AdminID === 'admin' && form.value.Password === 'admin') {
+      this.guard.loggedIn = true;
       this.loggedIn = true;
+      localStorage.setItem("loggedIn", 'true');
       this.router.navigate(['\customer-list']);
     }
+  }
+
+  logout() {
+    this.loggedIn = false;
+    this.guard.loggedIn = false;
+    localStorage.clear();
+    this.router.navigate(['']);
   }
 }

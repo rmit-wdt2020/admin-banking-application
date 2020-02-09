@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RouteGuard } from './services/routeguard.service';
 import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 
@@ -46,12 +47,12 @@ import {MatInputModule} from '@angular/material';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'customer-list', component: CustomerListComponent },
-      { path: 'account-list/:id', component: AccountListComponent },
-      { path: 'transaction-list/:customerid/:accountid', component: TransactionListComponent },
-      { path: 'bill-list/:customerid/:accountid', component: BillListComponent },
-      { path: 'chart/:customerid/:accountid/:startdate/:enddate', component: ChartComponent },
-      { path: 'edit-profile/:id', component: EditProfileComponent }
+      { path: 'customer-list', component: CustomerListComponent, canActivate: [RouteGuard] },
+      { path: 'account-list/:id', component: AccountListComponent, canActivate: [RouteGuard] },
+      { path: 'transaction-list/:customerid/:accountid', component: TransactionListComponent, canActivate: [RouteGuard] },
+      { path: 'bill-list/:customerid/:accountid', component: BillListComponent, canActivate: [RouteGuard] },
+      { path: 'chart/:customerid/:accountid/:startdate/:enddate', component: ChartComponent, canActivate: [RouteGuard] },
+      { path: 'edit-profile/:id', component: EditProfileComponent, canActivate: [RouteGuard] }
     ]),
     BrowserAnimationsModule,
     MatDatepickerModule,
@@ -59,7 +60,7 @@ import {MatInputModule} from '@angular/material';
     MatFormFieldModule,
     MatInputModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true }],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true }, [NavMenuComponent]],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
